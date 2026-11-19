@@ -1,0 +1,24 @@
+{
+    "id": 84324862,
+    "name": "Damage",
+    "author": "SonyaBMW",
+    "creators": ["SonyaBMW"],
+    "verifier": "Gilberto_Dash",
+    "verification": "https://www.youtube.com/watch?v=YGHYtpFTfXE",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "Gilberto_Dash",
+            "link": "https://www.youtube.com/watch?v=YGHYtpFTfXE",
+            "percent": 100,
+            "hz": 140
+        },
+        {
+            "user": "MegaHackV8",
+            "link": "https://medal.tv/games/geometry-dash/clips/n6FgXG9o3JG1ceFjT?invite=cr-MSxaQ2gsNTAyMDQ1MTg4",
+            "percent": 100,
+            "hz": 240
+        }
+    ]
+}

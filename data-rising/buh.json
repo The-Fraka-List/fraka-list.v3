@@ -1,0 +1,24 @@
+{
+    "id": 71084738,
+    "name": "Buh",
+    "author": "MazZedy",
+    "creators": ["MazZedy and more"],
+    "verifier": "Gilberto_Dash",
+    "verification": "https://www.youtube.com/watch?v=P_EI9wjmPCA",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "Gilberto_Dash",
+            "link": "https://www.youtube.com/watch?v=P_EI9wjmPCA",
+            "percent": 100,
+            "hz": 140
+        },
+        {
+            "user": "Dirinrex",
+            "link": "https://youtu.be/aubXWOKcLlw?si=nUajY_IxqcsO0ivz",
+            "percent": 100,
+            "hz": 60
+        }
+    ]
+}
