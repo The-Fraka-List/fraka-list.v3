@@ -1,0 +1,24 @@
+{
+    "id": 68731559,
+    "name": "Untitled",
+    "author": "iiLuna",
+    "creators": ["Convie, KrazyGFX, Zetalock, MadisonYuko, Zuku and iiLuna"],
+    "verifier": "Enzo",
+    "verification": "https://www.youtube.com/watch?v=7XxDi0A_D9Y",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "Enzo",
+            "link": "https://www.youtube.com/watch?v=7XxDi0A_D9Y",
+            "percent": 100,
+            "hz": 120
+        },
+        {
+            "user": "DGalindo",
+            "link": "https://youtu.be/XvKpUd_jkXY?si=ycCtBdnfZEkcqahM",
+            "percent": 100,
+            "hz": 120
+        }
+    ]
+}

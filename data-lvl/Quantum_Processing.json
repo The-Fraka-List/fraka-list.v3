@@ -1,0 +1,30 @@
+{
+    "id": 38235367,
+    "name": "Quantum Processing",
+    "author": "Riot",
+    "creators": ["Riot and more"],
+    "verifier": "S3b4s506_",
+    "verification": "https://www.youtube.com/watch?v=gseY8rvgfUA",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "S3b4s506_",
+            "link": "https://www.youtube.com/watch?v=gseY8rvgfUA",
+            "percent": 100,
+            "hz": 120
+        },
+                {
+            "user": "elmatigeims",
+            "link": "https://www.youtube.com/watch?v=K6XILeblHUs",
+            "percent": 100,
+            "hz": 120
+        },
+        {
+            "user": "xReizer",
+            "link": "https://www.youtube.com/watch?v=C6b63ZDaZRQ",
+            "percent": 100,
+            "hz": 120
+        }
+    ]
+}

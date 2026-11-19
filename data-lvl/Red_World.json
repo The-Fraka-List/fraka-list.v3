@@ -1,0 +1,24 @@
+{
+    "id": 2374518,
+    "name": "Red World",
+    "author": "saRy",
+    "creators": ["saRy & NePtunE"],
+    "verifier": "S3b4s506_",
+    "verification": "https://www.youtube.com/watch?v=iASF3kUET6E",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "S3b4s506_",
+            "link": "https://www.youtube.com/watch?v=iASF3kUET6E",
+            "percent": 100,
+            "hz": 120
+        },
+        {
+            "user": "el_d0c1",
+            "link": "https://youtu.be/HIMDvB9OYeI?si=Zo1ne2hIwaTpr4CY",
+            "percent": 100,
+            "hz": 240
+        }
+    ]
+}

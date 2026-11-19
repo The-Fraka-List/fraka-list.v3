@@ -1,0 +1,36 @@
+{
+    "id": 21280210,
+    "name": "The Flawless",
+    "author": "fin",
+    "creators": ["atheoz, xevenfurious, raptorz, reverier, megaspeed, codly, crispy creepz and fin"],
+    "verifier": "Fiumba_47",
+    "verification": "https://www.youtube.com/watch?v=wb9T2nRzWtU",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "Toxic",
+            "link": "https://www.youtube.com/watch?v=6AwbOy_-5Ms",
+            "percent": 100,
+            "hz": 480
+        },
+        {
+            "user": "Fiumba_47",
+            "link": "https://www.youtube.com/watch?v=wb9T2nRzWtU",
+            "percent": 100,
+            "hz": 120
+        },
+        {
+            "user": "Shiku",
+            "link": "https://youtu.be/38KisPUruuo?si=C-83Mw8kAxTQGZ8k",
+            "percent": 100,
+            "hz": 240
+        },
+        {
+            "user": "el_d0c1",
+            "link": "https://www.youtube.com/watch?v=Gvt314i-1RM&list=PLELpjRfo_Td42AOcQG6T64K9f6ML7QGot&index=9",
+            "percent": 100,
+            "hz": 240
+        }
+    ]
+}

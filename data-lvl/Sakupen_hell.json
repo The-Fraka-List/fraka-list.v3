@@ -1,0 +1,37 @@
+{
+    "id": 23262780,
+    "name": "Sakupen hell",
+    "author": "TrusTa",
+    "creators": ["Noobas"],
+    "verifier": "Fiumba_47",
+    "verification": "https://www.youtube.com/watch?v=ew1-S4cESVI&pp=0gcJCdoKAYcqIYzv",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "S3b4s506_",
+            "link": "https://www.youtube.com/watch?v=ea93xysrgDQ",
+            "percent": 100,
+            "hz": 280
+        },
+        {
+
+            "user": "Vlack",
+            "link": "https://www.youtube.com/watch?v=jKaza3vGr2c",
+            "percent": 100,
+            "hz": 120
+        },
+        {
+            "user": "Fiumba_47",
+            "link": "https://www.youtube.com/watch?v=ew1-S4cESVI&pp=0gcJCdoKAYcqIYzv",
+            "percent": 100,
+            "hz": 120
+        },
+        {
+            "user": "el_d0c1",
+            "link": "https://www.youtube.com/watch?v=h0K4Y_IN8Rg",
+            "percent": 100,
+            "hz": 240
+        }
+    ]
+}

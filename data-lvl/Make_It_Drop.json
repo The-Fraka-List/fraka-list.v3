@@ -1,0 +1,18 @@
+{
+    "id": 75518661,
+    "name": "Make It Drop",
+    "author": "ryamu",
+    "creators": ["ryamu and more"],
+    "verifier": "Benja_dark",
+    "verification": "https://www.youtube.com/watch?v=1iOq9uBO17Y",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "Benja_dark",
+            "link": "https://www.youtube.com/watch?v=1iOq9uBO17Y",
+            "percent": 100,
+            "hz": 160
+        }
+    ]
+}

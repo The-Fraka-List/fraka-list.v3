@@ -1,0 +1,66 @@
+{
+    "id": 797183213,
+    "name": "Mizureta",
+    "author": "dutchiee",
+    "creators": ["dutchiee and more"],
+    "verifier": "Enzo",
+    "verification": "https://www.youtube.com/watch?v=JRryxKTnPDk",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "TheGlaiCat",
+            "link": "https://www.youtube.com/watch?v=DfKAcu95ISg",
+            "percent": 100,
+            "hz": 90
+        },
+        {
+            "user": "Enzo",
+            "link": "https://www.youtube.com/watch?v=JRryxKTnPDk",
+            "percent": 100,
+            "hz": 160
+        },
+        {
+            "user": "Ares",
+            "link": "https://www.youtube.com/watch?v=nq9s8rs9tWU",
+            "percent": 100,
+            "hz": 60
+        },
+         {
+            "user": "Aku",
+            "link": "https://youtu.be/fWLfmkBgYFs",
+            "percent": 100,
+            "hz": 144
+        },
+        {
+            "user": "Kepta_bb",
+            "link": "https://www.youtube.com/watch?v=oqMOBePLdCk",
+            "percent": 100,
+            "hz": 120
+        },
+        {
+            "user": "S3b4s506_",
+            "link": "https://www.youtube.com/watch?v=ByzTvbqraA0",
+            "percent": 100,
+            "hz": 360
+        },
+        {
+            "user": "Fiumba_47",
+            "link": "https://youtu.be/-eOl7E_q_B0",
+            "percent": 100,
+            "hz": 75
+        },
+        {
+            "user": "elmatigeims",
+            "link": "https://youtu.be/4fvghU_3bxU",
+            "percent": 100,
+            "hz": 40
+        },
+        {
+            "user": "Juniorlock",
+            "link": "https://www.youtube.com/watch?v=wkgd1ejTLg0",
+            "percent": 100,
+            "hz": 240
+        }
+    ]
+}

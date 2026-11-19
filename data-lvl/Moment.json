@@ -1,0 +1,66 @@
+{
+    "id": 68848817,
+    "name": "Moment",
+    "author": "Lexycat",
+    "creators": ["Lexycat & ICEDCave"],
+    "verifier": "Kepta_bb",
+    "verification": "https://youtu.be/o_syI3QVWXE?si=KqaU8jXSdGEChZNx",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "Vlack",
+            "link": "https://www.youtube.com/watch?v=tP7ifD1I_HI",
+            "percent": 100,
+            "hz": 120
+        },
+        {
+            "user": "Toxic",
+            "link": "https://www.youtube.com/watch?v=5u0yRF76GQ0",
+            "percent": 100,
+            "hz": 240
+        },
+        {
+            "user": "AleezCourtz",
+            "link": "https://www.youtube.com/watch?v=JX901mxD2Jc",
+            "percent": 100,
+            "hz": 60
+        },
+         {
+            "user": "TheGlaiCat",
+            "link": "https://www.twitch.tv/videos/2618462861",
+            "percent": 100,
+            "hz": 144
+        },
+        {
+            "user": "Ares",
+            "link": "https://www.youtube.com/watch?v=1ch42oBVRLM",
+            "percent": 100,
+            "hz": 240
+        },
+        {
+            "user": "Kepta_bb",
+            "link": "https://youtu.be/o_syI3QVWXE?si=KqaU8jXSdGEChZNx",
+            "percent": 100,
+            "hz": 160
+        },
+        {
+            "user": "elmatigeims",
+            "link": "https://youtu.be/vSc9FCfL8Qg?si=jnDmE5pYoKxKVHbO",
+            "percent": 100,
+            "hz": 120
+        },
+        {
+            "user": "Xqvier",
+            "link": "https://www.youtube.com/watch?v=X9QHsAZnypI",
+            "percent": 100,
+            "hz": 60
+        },
+        {
+            "user": "xReizer",
+            "link": "https://youtu.be/bu_Yk-PdajI?si=mD5xGFea89r3gj-O",
+            "percent": 100,
+            "hz": 120
+        }
+    ]
+}

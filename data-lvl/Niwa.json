@@ -1,0 +1,91 @@
+{
+    "id": 87425029,
+    "name": "Niwa",
+    "author": "Teno",
+    "creators": ["Teno, Mrgm, ar12, Titoalper and more"],
+    "verifier": "Enzo",
+    "verification": "https://www.youtube.com/watch?v=b4ZMERDWruA",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "Benja_dark",
+            "link": "https://www.youtube.com/watch?v=O5O-vvLwoFw",
+            "percent": 100,
+            "hz": 60
+        },
+        {
+            "user": "TheGlaiCat",
+            "link": "https://www.youtube.com/watch?v=VChUOXeOtqs",
+            "percent": 100,
+            "hz": 60
+        },
+        {
+            "user": "Fiumba_47",
+            "link": "https://www.youtube.com/watch?v=etumD6BjDI4",
+            "percent": 100,
+            "hz": 60
+        },
+        {
+            "user": "Aku",
+            "link": "https://www.youtube.com/watch?v=NfVrTpjSIQI",
+            "percent": 100,
+            "hz": 240
+        },
+        {
+            "user": "xReizer",
+            "link": "https://www.youtube.com/watch?v=-LoG84Bd1Ww",
+            "percent": 100,
+            "hz": 120
+        },
+        {
+            "user": "Toxic",
+            "link": "https://www.youtube.com/watch?v=FTUGM_UUx4U",
+            "percent": 100,
+            "hz": 240
+        },
+        {
+            "user": "S3b4s506_",
+            "link": "https://www.youtube.com/watch?v=oMle-FJ4cL0",
+            "percent": 100,
+            "hz": 280
+        },
+        {
+            "user": "Enzo",
+            "link": "https://www.youtube.com/watch?v=b4ZMERDWruA",
+            "percent": 100,
+            "hz": 160
+        },
+        {
+            "user": "Ares",
+            "link": "https://youtu.be/SVPY0Zt8RHY?si=G_GH4r8dj2axg0le",
+            "percent": 100,
+            "hz": 60
+        },
+        {
+            "user": "Kepta_bb",
+            "link": "https://www.youtube.com/watch?v=VO930E638ag",
+            "percent": 100,
+            "hz": 120
+        },
+        {
+            "user": "Fabygamer",
+            "link": "https://www.youtube.com/watch?v=o3UZscXY1u4",
+            "percent": 100,
+            "hz": 60
+        },
+        {
+            "user": "el_d0c1",
+            "link": "https://www.youtube.com/watch?v=BbIeCyJKDgs",
+            "percent": 100,
+            "hz": 240
+        },
+        {
+            "user": "NotSparture",
+            "link": "https://youtu.be/GomRxoAezTo",
+            "percent": 100,
+            "hz": 190
+        }
+    ]
+}
+

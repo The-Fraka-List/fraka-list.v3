@@ -1,0 +1,18 @@
+{
+    "id": 71025973,
+    "name": "Oblivion",
+    "author": "dice88",
+    "creators": ["benji8080 and more"],
+    "verifier": "PlayLino",
+    "verification": "https://www.youtube.com/watch?v=BQ2JTGuwot4&t=31s",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "PlayLino",
+            "link": "https://www.youtube.com/watch?v=BQ2JTGuwot4&t=31s",
+            "percent": 100,
+            "hz": 160
+        }
+    ]
+}
