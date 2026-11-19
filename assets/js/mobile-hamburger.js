@@ -1,0 +1,55 @@
+(function () {
+
+    const hamburger = document.createElement('button');
+    hamburger.className = 'nav__hamburger';
+    hamburger.setAttribute('aria-label', 'Abrir menú');
+    hamburger.innerHTML = '<span></span><span></span><span></span>';
+
+    const mobileMenu = document.createElement('div');
+    mobileMenu.className = 'nav__mobile-menu';
+    mobileMenu.innerHTML = `
+        <button class="nav__link-btn active" data-tab="tab-list">List</button>
+        <button class="nav__link-btn" data-tab="tab-rising">Rising</button>
+        <button class="nav__link-btn" data-tab="tab-leaderboard">Leaderboard</button>
+        <button class="nav__link-btn" data-tab="tab-roulette">Roulette</button>
+        <button class="nav__link-btn" data-tab="tab-frk-dm">FRK-DM</button>
+        <div class="nav__mobile-actions">
+            <a href="https://discord.gg/5Ht99YYBwn" target="_blank" class="nav__discord-btn" aria-label="Discord">
+                <img src="assets/img/discord-icon.svg" alt="" class="nav__discord-icon">
+            </a>
+        </div>
+    `;
+
+    document.querySelector('.nav__inner').appendChild(hamburger);
+    document.querySelector('.nav').appendChild(mobileMenu);
+
+    function closeMenu() {
+        mobileMenu.classList.remove('open');
+        hamburger.classList.remove('open');
+    }
+
+    hamburger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = mobileMenu.classList.toggle('open');
+        hamburger.classList.toggle('open', open);
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) closeMenu();
+    });
+
+
+    mobileMenu.querySelectorAll('[data-tab]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tab = btn.dataset.tab;
+            mobileMenu.querySelectorAll('.nav__link-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.nav__links .nav__link-btn').forEach(b => {
+                b.classList.toggle('active', (b.getAttribute('onclick') || '').includes(tab));
+            });
+            if (typeof switchTab === 'function') switchTab(tab, btn);
+            closeMenu();
+        });
+    });
+
+})();

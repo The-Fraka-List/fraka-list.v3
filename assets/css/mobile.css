@@ -1,0 +1,917 @@
+.nav__hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+    transition: background var(--transition-fast);
+}
+.nav__hamburger:hover { background: var(--bg-elevated); }
+.nav__hamburger span {
+    display: block;
+    width: 16px;
+    height: 2px;
+    background: var(--text-secondary);
+    border-radius: 2px;
+    transition: all var(--transition-fast);
+}
+.nav__hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav__hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav__hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.nav__mobile-menu {
+    display: none;
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    background: #0d0d0d;
+    border-bottom: 1px solid var(--border);
+    z-index: 999;
+    padding: var(--space-2) var(--space-4) var(--space-3);
+    flex-direction: column;
+    gap: var(--space-1);
+    animation: slideDown 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nav__mobile-menu.open { display: flex; }
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.nav__mobile-menu .nav__link-btn {
+    width: 100%;
+    text-align: left;
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+    background: transparent;
+    border: none;
+    border-left: 3px solid transparent;
+    font-size: 0.9rem;
+}
+.nav__mobile-menu .nav__link-btn:hover  { background: var(--bg-surface); color: var(--text-primary); }
+.nav__mobile-menu .nav__link-btn.active { background: var(--bg-surface); color: var(--accent-light); border-left-color: var(--accent); }
+.nav__mobile-menu .nav__link-btn.active::after { display: none; }
+
+.nav__mobile-actions {
+    display: flex;
+    justify-content: center;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border);
+    margin-top: var(--space-1);
+}
+
+
+
+#mobile-back-btn {
+    display: none;
+    position: fixed;
+    top: calc(var(--nav-height) + 10px);
+    right: 14px;
+    z-index: 998;
+    width: 34px;
+    height: 34px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    color: var(--text-secondary);
+    font-size: 1rem;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--transition-fast), color var(--transition-fast);
+    box-shadow: var(--shadow-md);
+}
+#mobile-back-btn:active {
+    background: var(--accent);
+    border-color: var(--accent-light);
+    color: #fff;
+}
+
+
+
+.lb-cards     { display: none; }
+.lb-table-wrap { display: block; }
+
+.lb-table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    margin: var(--space-6) 0;
+    max-width: 1000px;
+}
+.lb-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-family: var(--font-body);
+}
+.lb-table thead tr { border-bottom: 2px solid var(--accent); }
+.lb-table th {
+    padding: 14px 16px;
+    color: var(--text-secondary);
+    font-family: var(--font-display);
+    font-weight: var(--font-semibold);
+    font-size: var(--font-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    background: var(--bg-elevated);
+}
+.lb-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-surface);
+    white-space: nowrap;
+    transition: background 0.2s;
+}
+.lb-table tr:last-child td { border-bottom: none; }
+.lb-table tr:hover td { background: var(--bg-card); }
+.lb-table .lb-rank   { font-weight: 700; font-size: 1.05rem; color: var(--accent-light); width: 48px; }
+.lb-table .lb-player { font-weight: 600; color: var(--text-primary); }
+.lb-table .lb-pts    { font-weight: 700; color: #fff; font-family: var(--font-mono); }
+.lb-table .lb-pts span { font-size: 0.78rem; color: var(--accent-light); }
+.lb-table .lb-center { text-align: center; }
+.lb-table .lb-right  { text-align: right; }
+.lb-table .lb-hardest { font-size: 0.88rem; color: var(--accent-light); font-style: italic; }
+.lb-table .lb-hardest-rank { color: var(--text-secondary); font-size: 0.78rem; }
+
+
+
+
+@media (max-width: 768px) {
+
+    body::before, body::after { display: none; }
+    .nav__links { display: none !important; }
+    .nav__hamburger { display: flex; }
+    .nav__inner { padding: 0 var(--space-4); }
+    
+    .nav__inner > div:last-child {
+        display: flex !important;
+        gap: var(--space-2) !important;
+        transform: scale(0.20);
+        transform-origin: right center;
+        margin-right: -8px;
+    }
+    .nav__inner > div:last-child .btn {
+        padding: var(--space-3) var(--space-6);
+        font-size: var(--font-sm);
+    }
+
+    html, body {
+        height: auto !important;
+        min-height: 100dvh;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+    }
+    
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+        width: 6px;
+    }
+    html::-webkit-scrollbar-thumb,
+    body::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: var(--radius-sm);
+    }
+    html::-webkit-scrollbar-thumb:hover,
+    body::-webkit-scrollbar-thumb:hover {
+        background: var(--text-muted);
+    }
+    .app-wrapper {
+        overflow: visible !important;
+        height: auto !important;
+        margin-top: 0 !important;
+    }
+    .container {
+        min-height: auto !important;
+        overflow: visible !important;
+        padding: 0 !important;
+    }
+    
+    .app-wrapper::-webkit-scrollbar,
+    .container::-webkit-scrollbar,
+    .main-content::-webkit-scrollbar {
+        width: 6px;
+    }
+    .app-wrapper::-webkit-scrollbar-thumb,
+    .container::-webkit-scrollbar-thumb,
+    .main-content::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: var(--radius-sm);
+    }
+    .app-wrapper::-webkit-scrollbar-thumb:hover,
+    .container::-webkit-scrollbar-thumb:hover,
+    .main-content::-webkit-scrollbar-thumb:hover {
+        background: var(--text-muted);
+    }
+
+    .main-content { display: none !important; }
+    .main-content.active {
+        display: block !important;
+        height: auto !important;
+        overflow: visible !important;
+        padding-top: calc(var(--nav-height) + var(--space-4)) !important;
+        padding-bottom: var(--space-8) !important;
+        padding-inline: var(--space-3) !important;
+        box-sizing: border-box;
+    }
+
+    .list-layout { display: block !important; height: auto !important; padding: 0 !important; }
+    .rising-view-shell {
+        height: auto !important;
+        min-height: auto !important;
+    }
+    .rising-leaderboard-container {
+        display: none !important;
+        height: auto !important;
+        overflow: visible !important;
+        padding-top: calc(var(--nav-height) + var(--space-4)) !important;
+        padding-inline: 0 !important;
+        padding-bottom: var(--space-4) !important;
+    }
+    .rising-leaderboard-container.active {
+        display: flex !important;
+    }
+    .rising-leaderboard-hero {
+        padding-bottom: var(--space-3) !important;
+    }
+    .rising-leaderboard-hero h1 {
+        font-size: 1.6rem !important;
+    }
+    #levels-sidebar,
+    #rising-sidebar {
+        display: block !important;
+        height: auto !important;
+        max-height: none !important;
+        overflow-y: visible !important;
+        padding-right: 0 !important;
+    }
+    #level-details,
+    #rising-details {
+        display: none !important;
+        height: auto !important;
+        overflow-y: visible !important;
+        padding-right: 0 !important;
+    }
+    
+    #levels-sidebar::-webkit-scrollbar,
+    #level-details::-webkit-scrollbar,
+    #rising-sidebar::-webkit-scrollbar,
+    #rising-details::-webkit-scrollbar {
+        width: 6px;
+    }
+    #levels-sidebar::-webkit-scrollbar-thumb,
+    #level-details::-webkit-scrollbar-thumb,
+    #rising-sidebar::-webkit-scrollbar-thumb,
+    #rising-details::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: var(--radius-sm);
+    }
+    #levels-sidebar::-webkit-scrollbar-thumb:hover,
+    #level-details::-webkit-scrollbar-thumb:hover,
+    #rising-sidebar::-webkit-scrollbar-thumb:hover,
+    #rising-details::-webkit-scrollbar-thumb:hover {
+        background: var(--text-muted);
+    }
+    
+    #levels-sidebar.mobile-hidden  { display: none !important; }
+    #level-details.mobile-active   { display: block !important; }
+    #rising-sidebar.mobile-hidden  { display: none !important; }
+    #rising-details.mobile-active  { display: block !important; }
+    #mobile-back-btn.visible       { display: flex; }
+
+    #tab-roulette { height: auto !important; overflow: visible !important; }
+    .roulette-layout {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: var(--space-4) !important;
+        height: auto !important;
+        padding-top: 0 !important;
+    }
+    .roulette-sidebar { width: 100% !important; overflow-y: visible !important; padding-right: 0 !important; }
+    .roulette-levels-container { width: 100% !important; height: auto !important; overflow-y: visible !important; padding-right: 0 !important; min-height: 200px; }
+    .roulette-level { grid-template-columns: 100px 1fr !important; }
+    
+    .roulette-sidebar::-webkit-scrollbar,
+    .roulette-levels-container::-webkit-scrollbar {
+        width: 6px;
+    }
+    .roulette-sidebar::-webkit-scrollbar-thumb,
+    .roulette-levels-container::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: var(--radius-sm);
+    }
+    .roulette-sidebar::-webkit-scrollbar-thumb:hover,
+    .roulette-levels-container::-webkit-scrollbar-thumb:hover {
+        background: var(--text-muted);
+    }
+
+    .card { padding: var(--space-4) !important; }
+    #level-details h1,
+    #rising-details h1 { font-size: 1.6rem !important; }
+    .level-card:hover { transform: none !important; }
+    .btn { min-height: 38px; min-width: 44px; }
+
+    .level-search-container {
+        margin-bottom: 10px;
+    }
+
+    .rising-leaderboard-hero {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .rising-leaderboard-hero .legacy-toggle-btn {
+        margin-left: 0;
+    }
+
+    .level-search-input {
+        flex: 1;
+        min-width: 0;
+        font-size: 16px;
+    }
+
+    .lb-table-wrap { display: none !important; }
+    .lb-cards {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+        padding-bottom: var(--space-4);
+    }
+    
+    .lb-table-wrap::-webkit-scrollbar {
+        height: 6px;
+    }
+    .lb-table-wrap::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: var(--radius-sm);
+    }
+    .lb-table-wrap::-webkit-scrollbar-thumb:hover {
+        background: var(--text-muted);
+    }
+
+    .lb-page-header { padding: var(--space-2) 0 var(--space-3) !important; }
+    .lb-page-header .page-title    { font-size: 1.6rem !important; margin: 0 0 var(--space-1) !important; }
+    .lb-page-header .page-subtitle { font-size: var(--font-xs) !important; margin: 0 !important; }
+
+    .lb-card {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: var(--space-3) var(--space-4);
+        transition: background var(--transition-fast);
+    }
+    .lb-card:active { background: var(--bg-card); }
+
+    .lb-card__rank {
+        font-family: var(--font-mono);
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--text-secondary);
+        min-width: 34px;
+        text-align: center;
+        flex-shrink: 0;
+    }
+    .lb-card__rank--gold   { color: #f0c040; }
+    .lb-card__rank--silver { color: #c0c0c0; }
+    .lb-card__rank--bronze { color: #cd7f32; }
+
+    .lb-card__body {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+    .lb-card__name {
+        font-weight: 700;
+        font-size: var(--font-base);
+        color: var(--text-primary);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .lb-card__hardest {
+        font-size: var(--font-xs);
+        color: var(--text-muted);
+        font-style: italic;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .lb-card__stats {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: var(--font-xs);
+        color: var(--text-secondary);
+        flex-wrap: wrap;
+    }
+    .lb-card__stats strong { color: var(--text-primary); }
+    .lb-card__sep { color: var(--text-muted); }
+
+    .lb-card__pts {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        font-family: var(--font-mono);
+        font-weight: 700;
+        font-size: var(--font-base);
+        color: #fff;
+        line-height: 1.2;
+    }
+    .lb-card__pts span {
+        font-size: 0.65rem;
+        color: var(--accent-light);
+        font-weight: 400;
+    }
+}
+
+
+
+
+@media (max-width: 480px) {
+    :root { --nav-height: 60px; }
+    .nav__logo span { font-size: 1.1rem !important; }
+    .main-content.active { padding-inline: var(--space-2) !important; }
+    #level-details h1,
+    #rising-details h1 { font-size: 1.35rem !important; }
+    .lb-card { padding: var(--space-2) var(--space-3); gap: var(--space-2); }
+    .lb-card__name { font-size: var(--font-sm); }
+    .lb-card__pts  { font-size: var(--font-sm); }
+
+    .level-search-container {
+        flex-wrap: wrap;
+    }
+    .level-search-container .level-search-input {
+        flex: 1 1 100%;
+    }
+    .legacy-toggle-btn {
+        margin-left: auto;
+    }
+}
+
+
+
+@media (max-width: 768px) {
+    #tab-frk-dm {
+        height: auto !important;
+        overflow: visible !important;
+        overflow-y: auto !important;
+        padding-top: calc(var(--nav-height) + var(--space-4)) !important;
+        padding-right: 0 !important;
+        overflow-x: hidden !important;
+    }
+
+    .fdm-detail__close-btn {
+        top: calc(var(--nav-height) + var(--space-3));
+        right: var(--space-3);
+        width: 40px;
+        height: 40px;
+        font-size: 1.6rem;
+        z-index: 997;
+        box-shadow: var(--shadow-md);
+    }
+
+    .fdm-layout {
+        grid-template-columns: 1fr;
+        padding: var(--space-3);
+        gap: var(--space-3);
+        display: grid;
+    }
+    .fdm-layout.mobile-hidden {
+        display: none !important;
+    }
+
+    .fdm-card {
+        width: 100%;
+    }
+    .fdm-card__banner {
+        height: 180px;
+        object-fit: cover;
+    }
+    .fdm-card__title {
+        font-size: 1.1rem;
+        margin-top: var(--space-2);
+    }
+
+    .fdm-detail {
+        padding: 0;
+        width: 100%;
+        display: block; 
+    }
+
+    .fdm-detail__header {
+        padding: var(--space-4) var(--space-3) var(--space-3);
+    }
+
+    .fdm-detail__title {
+        font-size: 1.5rem;
+        margin-top: var(--space-3);
+    }
+
+    .fdm-detail__banner {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .fdm-detail__body {
+        grid-template-columns: 1fr;
+        padding: var(--space-3);
+        gap: var(--space-4);
+    }
+
+    .fdm-detail__votes-container,
+    .fdm-detail__video-container {
+        padding: 0;
+    }
+
+    .fdm-detail__votes-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    #tab-frk-dm {
+        padding-top: calc(var(--nav-height) + var(--space-3)) !important;
+    }
+
+    .fdm-layout {
+        padding: var(--space-2);
+        gap: var(--space-2);
+    }
+
+    .fdm-card__banner {
+        height: 140px;
+    }
+
+    .fdm-card__title {
+        font-size: 1rem;
+    }
+
+    .fdm-detail__title {
+        font-size: 1.3rem;
+    }
+
+    .fdm-detail__banner {
+        height: 160px;
+    }
+
+    .fdm-detail__close-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1.4rem;
+    }
+}
+
+/* ── PERFIL (#tab-profile): carrusel horizontal en mobile ──
+   Mismo HTML y mismas funciones JS que en escritorio (renderPlayerProfileLayout/
+   Stats/Levels/Card no cambian en absoluto); acá solo se reacomoda el layout
+   existente vía flexbox + scroll-snap. El grid de 3 columnas de escritorio
+   (definido en components.css) no se toca: esta regla vive únicamente bajo
+   el breakpoint mobile, igual que .list-layout más arriba.
+
+   .profile-layout ya recibe padding-top (nav-height + space-4) y
+   padding-bottom (space-8) desde la regla genérica .main-content.active de
+   más arriba (aplicada sobre #tab-profile) — por eso acá se ponen en 0 los
+   propios de .profile-layout (los de escritorio), para no duplicar el
+   espaciado, y la altura se calcula descontando exactamente esos mismos
+   valores para que el carrusel ocupe una sola pantalla completa.
+
+   Orden pedido (Perfil -> Lista de niveles -> Estadísticas), distinto al
+   orden del DOM que genera main.js (Estadísticas, Lista, Perfil): se
+   resuelve con `order` de flexbox, sin reordenar ni duplicar el HTML. */
+@media (max-width: 768px) {
+
+    /* Red de seguridad anti-overflow: ningún elemento dentro del sistema de
+       perfiles (los 3 paneles, y el popup de confirmación de video, que se
+       inyecta aparte en <body> pero es parte del mismo sistema) puede
+       terminar más ancho que su contenedor. Sin esto, cualquier elemento
+       con width:100% + padding/border en box-sizing:content-box (el default
+       del navegador, porque el sitio no tiene un reset global de
+       box-sizing) se pasa unos px del ancho disponible y genera scroll
+       horizontal no deseado a nivel de página. max-width:100% además
+       obliga a que cualquier bloque angosto (tarjetas, barras de progreso,
+       texto) se reacomode adentro en vez de desbordar hacia los costados.
+       No afecta el ancho de los 3 paneles en sí (eso lo define
+       flex:0 0 100% más abajo), solo actúa como límite superior. */
+    #tab-profile,
+    #tab-profile *,
+    .confirm-popup,
+    .confirm-popup * {
+        box-sizing: border-box;
+        max-width: 100%;
+    }
+
+    /* Los nombres de nivel dentro de la lista del perfil (reutilizan
+       .text-display, igual que el listado principal) no tienen manejo de
+       overflow propio: en el listado principal el panel es ancho de sobra,
+       pero acá el panel es de pantalla completa y un nombre largo podría
+       generar overflow horizontal si trajera una palabra sin espacios. Se
+       escopea solo a este panel para no tocar #levels-sidebar. */
+    #profile-levels-container .text-display {
+        overflow-wrap: break-word;
+    }
+
+    .profile-layout {
+        display: flex !important;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        gap: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        padding-inline: 0 !important;
+        height: calc(100dvh - var(--nav-height) - var(--space-4) - var(--space-8)) !important;
+        /* Firefox: scrollbar delgada con el mismo color que el resto del sitio */
+        scrollbar-width: thin;
+        scrollbar-color: var(--border) transparent;
+    }
+
+    /* Scrollbar horizontal con el mismo diseño que ya usa el resto del
+       sitio (ver .profile-panel::-webkit-scrollbar en components.css):
+       misma altura, mismo color de thumb y mismo hover, solo que acá es
+       horizontal en vez de vertical. Cubre el caso de que aparezca una
+       barra visible (trackpad, mouse, tablet con puntero) además del
+       swipe táctil. */
+    .profile-layout::-webkit-scrollbar {
+        height: 6px;
+    }
+    .profile-layout::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: var(--radius-sm);
+    }
+    .profile-layout::-webkit-scrollbar-thumb:hover {
+        background: var(--text-muted);
+    }
+
+    .profile-panel {
+        flex: 0 0 100%;
+        max-width: 100%;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+    }
+
+    .profile-panel--right  { order: 1; } /* 1. Perfil (tarjeta) */
+    .profile-panel--center { order: 2; } /* 2. Lista de niveles */
+    .profile-panel--left   { order: 3; } /* 3. Estadísticas */
+
+    /* Indicadores del carrusel: fila de puntitos fija en la parte inferior
+       de #tab-profile, por encima del carrusel (no se mueven con el swipe
+       porque son hermanos de .profile-layout, no hijos). El punto de la
+       sección visible se llena; el resto queda hueco. */
+    .profile-carousel-dots {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: var(--space-2);
+
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: var(--space-4);
+        z-index: 5;
+        pointer-events: none;
+    }
+
+    .profile-carousel-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: var(--radius-full);
+        background: transparent;
+        border: 1px solid var(--text-secondary);
+        transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .profile-carousel-dot.active {
+        background: var(--accent-light);
+        border-color: var(--accent-light);
+        transform: scale(1.2);
+    }
+}
+
+/* ── PERFIL: ajuste fino para teléfonos muy angostos (~320-480px) ──
+   El breakpoint de 768px de arriba ya deja todo sin overflow, esto solo
+   apretuja un poco más el espaciado y algunos tamaños para que no se sienta
+   amontonado en pantallas chicas, igual que ya hace el sitio para
+   .lb-card/.fdm-* en sus propios bloques de 480px. No cambia ninguna
+   estructura, solo valores de padding/tamaño. */
+@media (max-width: 480px) {
+    #tab-profile .profile-panel {
+        padding: var(--space-3);
+    }
+
+    #tab-profile .profile-card__avatar {
+        width: 72px;
+        height: 72px;
+    }
+
+    #tab-profile .profile-card__avatar-wrap {
+        top: 96px;
+    }
+
+    #tab-profile .profile-card__top {
+        height: 96px;
+    }
+
+    #tab-profile .profile-card__bottom {
+        top: 96px;
+    }
+
+    #tab-profile .profile-card__body {
+        padding: calc(145px + var(--space-4)) var(--space-4) var(--space-4);
+    }
+
+    #tab-profile .profile-card__name {
+        font-size: 1.1rem;
+        margin-bottom: var(--space-4);
+    }
+
+    #tab-profile .profile-panel__title {
+        font-size: 0.9rem;
+    }
+
+    #profile-levels-container .level-card {
+        padding: var(--space-3) !important;
+        gap: var(--space-3) !important;
+    }
+
+    .confirm-popup__content {
+        padding: var(--space-4);
+    }
+}
+
+/* ── List y Rising: vista móvil de lista/detalle ── */
+@media (max-width: 899px) {
+    #tab-profile.active {
+        position: relative;
+        inset: auto;
+        width: auto;
+        min-height: calc(100vh - var(--nav-height));
+        min-height: calc(100dvh - var(--nav-height));
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    #tab-list.active,
+    #tab-rising.active {
+        position: fixed !important;
+        inset: var(--nav-height) 0 auto !important;
+        z-index: 1;
+        width: 100%;
+        max-width: none;
+        height: calc(100vh - var(--nav-height)) !important;
+        height: calc(100dvh - var(--nav-height)) !important;
+        min-height: 0 !important;
+        margin: 0;
+        padding: 0 !important;
+        overflow: hidden !important;
+        box-sizing: border-box;
+    }
+
+    #tab-list .list-layout,
+    #tab-rising .list-layout {
+        display: block !important;
+        height: 100% !important;
+        min-height: 0;
+        padding: 0 !important;
+        overflow: hidden;
+    }
+
+    #tab-rising .rising-view-shell {
+        height: 100% !important;
+        min-height: 0 !important;
+    }
+
+    #tab-rising .rising-leaderboard-container {
+        height: 100% !important;
+        padding: var(--space-4) var(--space-3) !important;
+    }
+
+    #tab-list .sidebar-list-wrapper,
+    #tab-rising .sidebar-list-wrapper {
+        height: 100%;
+        min-height: 0;
+        padding: var(--space-3);
+        box-sizing: border-box;
+    }
+
+    #tab-list .level-search-container,
+    #tab-rising .level-search-container {
+        flex: 0 0 auto;
+        min-height: 44px;
+        margin-bottom: var(--space-2);
+    }
+
+    #tab-list .level-search-input,
+    #tab-rising .level-search-input {
+        min-height: 44px;
+    }
+
+    #tab-list .legacy-toggle-btn,
+    #tab-rising .legacy-toggle-btn {
+        min-height: 44px;
+        box-sizing: border-box;
+    }
+
+    #tab-list #levels-sidebar,
+    #tab-rising #rising-sidebar {
+        flex: 1 1 auto;
+        height: auto !important;
+        min-height: 0;
+        max-height: none !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        overscroll-behavior: contain;
+        padding: 0 2px 0 0 !important;
+    }
+
+    #tab-list #level-details,
+    #tab-rising #rising-details {
+        display: none !important;
+        width: 100%;
+        height: 100% !important;
+        min-height: 0;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        overscroll-behavior: contain;
+        padding: var(--space-3) !important;
+        box-sizing: border-box;
+    }
+
+    #tab-list.mobile-detail-open .sidebar-list-wrapper,
+    #tab-rising.mobile-detail-open .sidebar-list-wrapper {
+        display: none !important;
+    }
+
+    #tab-list.mobile-detail-open #level-details,
+    #tab-rising.mobile-detail-open #rising-details {
+        display: block !important;
+    }
+
+    #tab-list #levels-sidebar .level-card,
+    #tab-rising #rising-sidebar .level-card {
+        height: 76px;
+        min-height: 76px;
+        flex: 0 0 76px;
+        box-sizing: border-box;
+    }
+
+    #tab-list .mobile-detail-back,
+    #tab-rising .mobile-detail-back {
+        position: sticky;
+        top: calc(-1 * var(--space-3));
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+        width: max-content;
+        margin: calc(-1 * var(--space-3)) 0 var(--space-3);
+        padding: 0 var(--space-3);
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        color: var(--text-primary);
+        font-family: var(--font-body);
+        font-size: var(--font-base);
+        cursor: pointer;
+    }
+
+    #tab-list .mobile-detail-back:focus-visible,
+    #tab-rising .mobile-detail-back:focus-visible {
+        outline: 2px solid var(--accent-light);
+        outline-offset: 2px;
+    }
+
+    #tab-list .level-meta-grid,
+    #tab-rising .level-meta-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    #tab-list .level-meta-grid > div,
+    #tab-rising .level-meta-grid > div {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    #tab-list iframe,
+    #tab-rising iframe {
+        max-width: 100%;
+    }
+}
