@@ -1,0 +1,24 @@
+{
+    "id": 42117203,
+    "name": "Hyper Paracosm",
+    "author": "iIiViRuZiIi",
+    "creators": ["iIiViRuZiIi and iIiViRuZiIi"],
+    "verifier": "AleezCourtz",
+    "verification": "https://www.youtube.com/watch?v=ZazGd65Prw0",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "AleezCourtz",
+            "link": "https://www.youtube.com/watch?v=ZazGd65Prw0",
+            "percent": 100,
+            "hz": 160
+        },
+        {
+            "user": "Fiumba_47",
+            "link": "https://www.youtube.com/watch?v=6XNTLMjrlOA",
+            "percent": 100,
+            "hz": 75
+        }
+    ]
+}

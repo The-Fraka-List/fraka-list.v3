@@ -1,0 +1,18 @@
+{
+    "id": 97183213,
+    "name": "ADOMANIA",
+    "author": "Swib",
+    "creators": ["Swib"],
+    "verifier": "TheGlaiCat",
+    "verification": "https://youtu.be/Glz7wrZEAH0?si=QR1bn6BaVtsE0Co5",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "TheGlaiCat",
+            "link": "https://youtu.be/Glz7wrZEAH0?si=QR1bn6BaVtsE0Co5",
+            "percent": 100,
+            "hz": 120
+        }
+    ]
+}

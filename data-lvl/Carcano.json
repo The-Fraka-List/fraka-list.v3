@@ -1,0 +1,30 @@
+{
+    "id": 64148732,
+    "name": "Carcano",
+    "author": "Asuith",
+    "creators": ["Asuith and TomsoN"],
+    "verifier": "TheGlaiCat",
+    "verification": "https://www.youtube.com/watch?v=11nznCfnHmg&t=351s",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "TheGlaiCat",
+            "link": "https://www.youtube.com/watch?v=11nznCfnHmg&t=351s",
+            "percent": 100,
+            "hz": 120
+        },
+        {
+            "user": "elmatigeims",
+            "link": "https://youtu.be/bFGTTmL2d8o?si=RL0PDG52JBhL-BR_",
+            "percent": 100,
+            "hz": 120
+        },
+             {
+            "user": "Serrod11",
+            "link": "https://www.youtube.com/watch?v=bl4uAz_RpEY",
+            "percent": 100,
+            "hz": 240
+        }
+    ]
+}

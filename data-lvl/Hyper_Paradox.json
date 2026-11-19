@@ -1,0 +1,24 @@
+{
+    "id": 61531210,
+    "name": "Hyper Paradox",
+    "author": "ItsHybrid",
+    "creators": ["SyQual, Avati, Connected and more"],
+    "verifier": "elmatigeims",
+    "verification": "https://youtu.be/2Udk6ErK__U?si=a51pctn2rxbRTspU",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "TheGlaiCat",
+            "link": "https://www.youtube.com/watch?v=-moQFRZ1hCk&t=6s",
+            "percent": 100,
+            "hz": 60
+        },
+        {
+            "user": "elmatigeims",
+            "link": "https://youtu.be/2Udk6ErK__U?si=a51pctn2rxbRTspU",
+            "percent": 100,
+            "hz": 120
+        }
+    ]
+}

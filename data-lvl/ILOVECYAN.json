@@ -1,0 +1,18 @@
+{
+    "id": 78119012,
+    "name": "ILOVECYAN",
+    "author": "AVRG",
+    "creators": ["AVRG"],
+    "verifier": "Eduh",
+    "verification": "https://www.youtube.com/watch?v=c9JIlhH37WM",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "Eduh",
+            "link": "https://www.youtube.com/watch?v=c9JIlhH37WM",
+            "percent": 100,
+            "hz": 160
+        }
+    ]
+}

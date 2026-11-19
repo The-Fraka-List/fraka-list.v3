@@ -1,0 +1,24 @@
+{
+    "id": 87816034,
+    "name": "Curie",
+    "author": "Kedavra",
+    "creators": ["Kedavra and more"],
+    "verifier": "Toxic",
+    "verification": "https://www.youtube.com/watch?v=OwZoXDmSGQE",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "Toxic",
+            "link": "https://www.youtube.com/watch?v=OwZoXDmSGQE",
+            "percent": 100,
+            "hz": 120
+        },
+        {
+            "user": "AleezCourtz",
+            "link": "https://youtu.be/8N1AQnTWugs?si=QgljdvcRTEvE19SO",
+            "percent": 100,
+            "hz": 240
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "id": 74924716,
+    "name": "GLISTEN",
+    "author": "Squizaaard",
+    "creators": ["Onvil, ovdfo, RatQuesadilla, Squizaaard and xyuns"],
+    "verifier": "Kepta_bb",
+    "verification": "https://www.youtube.com/watch?v=u0vCiG01Xzw",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "Kepta_bb",
+            "link": "https://www.youtube.com/watch?v=u0vCiG01Xzw",
+            "percent": 100,
+            "hz": 160
+        },
+        {
+            "user": "elmatigeims",
+            "link": "https://www.youtube.com/",
+            "percent": 100,
+            "hz": 120
+        },
+        {
+            "user": "NotSparture",
+            "link": "https://youtu.be/iiYs08kdjss",
+            "percent": 100,
+            "hz": 60
+        }
+    ]
+}

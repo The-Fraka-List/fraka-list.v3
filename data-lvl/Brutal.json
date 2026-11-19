@@ -1,0 +1,54 @@
+{
+    "id": 138356396,
+    "name": "Brutal",
+    "author": "Tshack",
+    "creators": ["Tshack, airless"],
+    "verifier": "xReizer",
+    "verification": "https://www.youtube.com/watch?v=G44M8YKp-p4",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "xReizer",
+            "link": "https://www.youtube.com/watch?v=G44M8YKp-p4",
+            "percent": 100,
+            "hz": 120
+        },
+        {
+            "user": "el_d0c1",
+            "link": "https://www.youtube.com/watch?v=mKCamY31Ods",
+            "percent": 100,
+            "hz": 240
+        },
+        {
+            "user": "Kepta_bb",
+            "link": "https://www.youtube.com/watch?v=Z8st3cR8AlE",
+            "percent": 100,
+            "hz": 120
+        },
+        {
+            "user": "DGalindo",
+            "link": "https://www.youtube.com/watch?v=Xz0NXzxFKaA",
+            "percent": 100,
+            "hz": 60
+        },
+        {
+            "user": "S3b4s506_",
+            "link": "https://www.youtube.com/watch?v=QwJ4W2QvZhg",
+            "percent": 100,
+            "hz": 360
+        },
+        {
+            "user": "TheGlaicat",
+            "link": "https://www.youtube.com/watch?v=LuiP4lA1UhU",
+            "percent": 100,
+            "hz": 60
+        },
+        {
+            "user": "Aku",
+            "link": "https://youtu.be/R8zksUe4Ta0",
+            "percent": 100,
+            "hz": 90
+        }
+    ]
+}

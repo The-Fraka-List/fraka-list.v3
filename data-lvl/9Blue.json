@@ -1,0 +1,24 @@
+{
+    "id": 95061038,
+    "name": "9Blue",
+    "author": "Sardina",
+    "creators": ["NikVer and Sardina"],
+    "verifier": "NotSparture",
+    "verification": "https://www.youtube.com/watch?v=4xxvIZuGiII",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "NotSparture",
+            "link": "https://www.youtube.com/watch?v=4xxvIZuGiII",
+            "percent": 100,
+            "hz": 120
+        },
+        {
+            "user": "elmatigeims",
+            "link": "https://youtu.be/L3Dnmh5ESe8",
+            "percent": 100,
+            "hz": 120
+        }
+    ]
+}

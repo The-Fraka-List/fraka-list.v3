@@ -1,0 +1,24 @@
+{
+    "id": 58088534,
+    "name": "Advanced AirStream",
+    "author": "AngryBoy0644",
+    "creators": ["AngryBoy0644 and more"],
+    "verifier": "Toxic",
+    "verification": "https://www.youtube.com/watch?v=_UFqVi_tck0",
+    "percentToQualify": "100",
+    "password": "Free To Copy",
+    "records": [
+        {
+            "user": "Toxic",
+            "link": "https://www.youtube.com/watch?v=_UFqVi_tck0",
+            "percent": 100,
+            "hz": 120
+        },
+        {
+            "user": "elmatigeims",
+            "link": "https://youtu.be/_8uW4I8FN9U?si=yaqrpz0Rm4MKk6Xw",
+            "percent": 100,
+            "hz": 120
+        }
+    ]
+}

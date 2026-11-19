@@ -1,0 +1,18 @@
+{
+    "id": 62151546,
+    "name": "Evangelion",
+    "author": "Yoonsr",
+    "creators": ["Yoonsr, hawkyre, Arithi, blastblock, XGen26, Chuckgamer1, Skrypto, Connected, Omni, Lem, Scopal and Morin"],
+    "verifier": "TheGlaiCat",
+    "verification": "https://www.youtube.com/watch?v=MMLWGKtJ-Eg",
+    "percentToQualify": "100",
+    "password": "100495",
+    "records": [
+        {
+            "user": "TheGlaiCat",
+            "link": "https://www.youtube.com/watch?v=MMLWGKtJ-Eg",
+            "percent": 100,
+            "hz": 160
+        }
+    ]
+}
