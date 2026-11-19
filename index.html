@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Fraka List</title>
+    <link rel="stylesheet" href="assets/css/variables.css">
+    <link rel="stylesheet" href="assets/css/nav.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/roulette.css">
+    <link rel="stylesheet" href="assets/css/mobile.css">
+    <link rel="icon" href="assets/img/favicon.png" type="image/png">
+    <link rel="stylesheet" href="assets/css/welcome.css">
+    <link rel="stylesheet" href="assets/css/mod-list.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+        }
+        .app-wrapper {
+            flex: 1;
+            margin-top: var(--nav-height);
+    }
+        .main-content {
+            display: none;
+        }
+        .main-content.active {
+            display: block;
+            animation: fadeIn var(--transition-base) ease;
+        }
+
+        .list-layout {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: var(--space-6);
+            align-items: start;
+        }
+        
+        .sidebar-list {
+            max-height: calc(100vh - var(--nav-height) - var(--space-16));
+            overflow-y: auto;
+            padding-right: var(--space-2);
+        }
+        
+        .sidebar-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar-list::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: var(--radius-full);
+        }
+
+        .nav__link-btn {
+            background: none;
+            border: none;
+            padding: var(--space-2) var(--space-4);
+            color: var(--text-secondary);
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: color var(--transition-fast);
+            position: relative;
+        }
+        .nav__link-btn:hover {
+            color: var(--text-primary);
+        }
+        .nav__link-btn.active {
+            color: var(--accent-light);
+        }
+        .nav__link-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: var(--space-4);
+            right: var(--space-4);
+            height: 2px;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="bug-tab" class="bug-tab">
+        <button id="bug-tab-handle" class="bug-tab__handle" onclick="toggleBugTab()">⚠ Bugs</button>
+        <div class="bug-tab__panel">
+            <h3 class="bug-tab__title">Bugs encontrados</h3>
+            <p class="bug-tab__desc">ID duplicadas, mal escrito, código mal ejecutado.</p>
+            <ul id="bug-tab-list" class="bug-tab__list"></ul>
+        </div>
+    </div>
+
+    <header class="nav">
+        <div class="nav__inner">
+            <div class="nav__logo">
+                <span class="text-display" style="font-size: 1.4rem; font-weight: 700; letter-spacing: 0.05em;">
+                    FRAKA <span class="text-accent">LIST</span>
+                </span>
+            </div>
+
+            
+            <div class="nav__links">
+                <button class="nav__link-btn" data-route="list">List</button>
+                <button class="nav__link-btn" data-route="rising">Rising</button>
+                <button class="nav__link-btn" data-route="leaderboard">Leaderboard</button>
+                <button class="nav__link-btn" data-route="roulette">Roulette</button>
+                <button class="nav__link-btn" data-route="frk-dm">FRK-DM</button>
+            </div>
+
+            <div style="display: flex; gap: var(--space-3); align-items: center;">
+                <a href="https://discord.gg/5Ht99YYBwn" target="_blank" class="nav__discord-btn" aria-label="Discord">
+                    <img src="assets/img/discord-icon.svg" alt="" class="nav__discord-icon">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section id="tab-welcome" class="main-content active">
+            <!-- Contenido generado por welcome.js -->
+        </section>
+
+        <section id="tab-list" class="main-content">
+            <div class="list-layout">
+                <div class="sidebar-list-wrapper">
+
+                    <div class="level-search-container">
+                        <input
+                            type="text"
+                            id="level-search"
+                            placeholder="Buscar nivel..."
+                            aria-label="Buscar nivel en List"
+                            class="level-search-input"
+                        >
+                        <button
+                            type="button"
+                            id="legacy-toggle"
+                            class="legacy-toggle-btn"
+                            aria-pressed="false"
+                            aria-label="Alternar vista Legacy (Top 151+)"
+                        >
+                            <span class="legacy-toggle-track"><span class="legacy-toggle-thumb"></span></span>
+                            <span class="legacy-toggle-label">Legacy</span>
+                        </button>
+                    </div>
+
+                    <div class="sidebar-list" id="levels-sidebar"></div>
+
+                </div>
+                
+                <div class="level-detail-panel" id="level-details"></div>
+            </div>
+        </section>
+
+        <section id="tab-rising" class="main-content">
+            <div class="rising-view-shell">
+                <div class="list-layout">
+                    <div class="sidebar-list-wrapper">
+
+                        <div class="level-search-container">
+                            <input
+                                type="text"
+                                id="rising-search"
+                                placeholder="Buscar nivel..."
+                                aria-label="Buscar nivel en Rising"
+                                class="level-search-input"
+                            >
+                            <button
+                                type="button"
+                                id="rising-view-toggle"
+                                class="legacy-toggle-btn"
+                                aria-pressed="false"
+                                aria-label="Alternar entre la lista y la leaderboard de Rising"
+                            >
+                                <span class="legacy-toggle-track"><span class="legacy-toggle-thumb"></span></span>
+                                <span class="legacy-toggle-label">Leader</span>
+                            </button>
+                        </div>
+
+                        <div class="sidebar-list" id="rising-sidebar"></div>
+
+                    </div>
+
+                    <div class="level-detail-panel" id="rising-details"></div>
+                </div>
+
+                <div id="rising-leaderboard-container" class="rising-leaderboard-container" style="display:none;"></div>
+            </div>
+        </section>
+
+        <section id="tab-leaderboard" class="main-content">
+            <div class="page-hero" style="padding: var(--space-8) 0 var(--space-6);">
+                <div class="page-hero__label">Puntuaciones Globales</div>
+                <h1 style="font-family: var(--font-display); font-size: 3rem; margin: 1;">Top Jugadores</h1>
+            </div>
+            <div id="leaderboard-container"></div>
+        </section>
+
+        <section id="tab-roulette" class="main-content">
+            <div class="roulette-layout">
+
+                <aside class="roulette-sidebar">
+                    <div class="roulette-sidebar__block">
+                        <span class="roulette-sidebar__label">Fraka-reto</span>
+                        <h2 class="roulette-sidebar__title">Demon Roulette</h2>
+                        <p class="roulette-sidebar__desc">Completa un porcentaje de cada nivel asignado al azar. ¿Hasta dónde llegarás?</p>
+                    </div>
+
+                    <div class="roulette-sidebar__block">
+                        <button id="roulette-btn-start" class="btn btn--primary roulette-btn-full">INICIAR</button>
+                        <button id="roulette-btn-giveup" class="btn roulette-btn-full roulette-btn-danger" style="display:none;">RENDIRSE</button>
+                    </div>
+
+                    <div class="roulette-sidebar__block">
+                        <span class="roulette-sidebar__label">Progreso manual</span>
+                        <div class="roulette-sidebar__savebtns">
+                            <button id="roulette-btn-import" class="btn btn--secondary">Importar</button>
+                            <button id="roulette-btn-export" class="btn btn--secondary" disabled>Exportar</button>
+                        </div>
+                        <input type="file" id="roulette-file-input" accept=".json" style="display:none;">
+                    </div>
+
+                    <div id="roulette-current-panel" class="roulette-current" style="display:none;">
+                        <span class="roulette-sidebar__label">Nivel actual</span>
+                        <div id="roulette-current-name" class="roulette-current__name"></div>
+                        <div id="roulette-current-rank" class="roulette-current__rank"></div>
+                        <div class="roulette-current__input-row">
+                            <input type="number" id="roulette-percent-input" class="roulette-input" placeholder="Tu porcentaje" min="1" max="100">
+                            <button id="roulette-btn-done" class="btn btn--primary">LISTO</button>
+                        </div>
+                    </div>
+
+                    <div id="roulette-toasts"></div>
+                </aside>
+
+                <div class="roulette-levels-container" id="roulette-levels-container">
+                    <div id="roulette-levels-list" class="roulette-levels-list">
+                        <div class="roulette-empty">
+                            <p>Iniciá la ruleta para comenzar.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="tab-frk-dm" class="main-content">
+        </section>
+
+        <!-- Sección genérica de perfil de jugador. Resuelve cualquier hash
+             #player/Nombre (ver handleHashRouting en main.js). El contenido
+             todavía no se renderiza: por ahora solo existe como destino
+             válido de la navegación por hash. -->
+        <section id="tab-profile" class="main-content">
+        </section>
+
+        <!-- Vista oculta accesible únicamente mediante el hash #frk-mod-list.
+             No existe ningún botón, enlace ni elemento de menú que apunte aquí:
+             el router genérico de main.js la activa igual que cualquier otra
+             sección en cuanto detecta el hash en la URL. -->
+        <section id="tab-frk-mod-list" class="main-content modlist-view">
+            <div class="modlist-shell">
+                <header class="modlist-header">
+                    <h1 class="modlist-title">Generador de <span class="text-accent">JSON</span></h1>
+                    <p class="modlist-subtitle">Herramienta interna para construir archivos de nivel</p>
+                </header>
+
+                <div class="modlist-toolbar">
+                    <input type="file" id="modlist-file-input" accept=".json" style="display:none;">
+                    <button type="button" id="modlist-btn-load" class="btn btn--secondary">Cargar archivo</button>
+                    <button type="button" id="modlist-btn-download" class="btn btn--primary" disabled>Descargar JSON</button>
+                </div>
+
+                <form id="modlist-form" class="modlist-form">
+
+                    <fieldset class="modlist-fieldset">
+                        <legend class="modlist-legend">Datos generales</legend>
+
+                        <div class="modlist-field">
+                            <label class="modlist-label" for="modlist-filename">Nombre del archivo</label>
+                            <input type="text" id="modlist-filename" class="modlist-input" placeholder="damage.json">
+                        </div>
+
+                        <div class="modlist-field">
+                            <label class="modlist-label" for="modlist-id">ID</label>
+                            <input type="number" id="modlist-id" class="modlist-input" placeholder="84324862">
+                        </div>
+
+                        <div class="modlist-field">
+                            <label class="modlist-label" for="modlist-name">Nombre</label>
+                            <input type="text" id="modlist-name" class="modlist-input" placeholder="Damage">
+                        </div>
+
+                        <div class="modlist-field">
+                            <label class="modlist-label" for="modlist-author">Autor</label>
+                            <input type="text" id="modlist-author" class="modlist-input" placeholder="SonyaBMW">
+                        </div>
+
+                        <div class="modlist-field">
+                            <label class="modlist-label" for="modlist-verifier">Verifier</label>
+                            <input type="text" id="modlist-verifier" class="modlist-input" placeholder="Gilberto_Dash">
+                        </div>
+
+                        <div class="modlist-field">
+                            <label class="modlist-label" for="modlist-verification">Verification</label>
+                            <input type="url" id="modlist-verification" class="modlist-input" placeholder="https://www.youtube.com/watch?v=...">
+                        </div>
+
+                        <div class="modlist-field">
+                            <label class="modlist-label" for="modlist-percent">PercentToQualify</label>
+                            <input type="number" id="modlist-percent" class="modlist-input" min="1" max="100" placeholder="100">
+                        </div>
+
+                        <div class="modlist-field">
+                            <label class="modlist-label" for="modlist-password">Password</label>
+                            <input type="text" id="modlist-password" class="modlist-input" placeholder="Free To Copy">
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="modlist-fieldset">
+                        <legend class="modlist-legend">Creators</legend>
+
+                        <div id="modlist-creators-list" class="modlist-creators-list">
+                            <div class="modlist-creator-row" data-creator-row>
+                                <input type="text" class="modlist-input modlist-creator-input" placeholder="Nombre del creator">
+                                <button type="button" class="modlist-remove-btn" data-remove-creator title="Eliminar creator">×</button>
+                            </div>
+                        </div>
+
+                        <button type="button" id="modlist-btn-add-creator" class="btn btn--secondary modlist-add-btn">+ Añadir Creator</button>
+                    </fieldset>
+
+                    <fieldset class="modlist-fieldset">
+                        <legend class="modlist-legend">Records</legend>
+
+                        <div id="modlist-records-list" class="modlist-records-list">
+                            <div class="modlist-record" data-record>
+                                <div class="modlist-record__header">
+                                    <span class="modlist-record__label" data-record-label>Record #1</span>
+                                    <button type="button" class="modlist-remove-btn" data-remove-record title="Eliminar record">×</button>
+                                </div>
+                                <div class="modlist-record__grid">
+                                    <div class="modlist-field">
+                                        <label class="modlist-label">User</label>
+                                        <input type="text" class="modlist-input modlist-record-user" placeholder="Gilberto_Dash">
+                                    </div>
+                                    <div class="modlist-field">
+                                        <label class="modlist-label">Link</label>
+                                        <input type="url" class="modlist-input modlist-record-link" placeholder="https://www.youtube.com/watch?v=...">
+                                    </div>
+                                    <div class="modlist-field">
+                                        <label class="modlist-label">Percent</label>
+                                        <input type="number" class="modlist-input modlist-record-percent" min="1" max="100" placeholder="100">
+                                    </div>
+                                    <div class="modlist-field">
+                                        <label class="modlist-label">Hz</label>
+                                        <input type="number" class="modlist-input modlist-record-hz" min="0" placeholder="140">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" id="modlist-btn-add-record" class="btn btn--secondary modlist-add-btn">+ Añadir Record</button>
+                    </fieldset>
+
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Player Modal -->
+    <div id="player-modal" class="player-modal" onclick="if(event.target === this) closePlayerModal()">
+        <div class="player-modal-content-wrapper">
+            <div id="player-modal-content" class="player-modal-content"></div>
+        </div>
+    </div>
+
+    <script src="welcome.js"></script>
+    <script src="assets/js/frk-dm.js"></script>
+    <script src="main.js"></script>
+    <script src="assets/js/mobile-hamburger.js"></script>
+    <script src="assets/js/mod-list.js"></script>
+</body>
+</html>
