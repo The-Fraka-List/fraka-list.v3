@@ -165,7 +165,7 @@ async function fetchOwnAccount() {
 }
 
 async function callRegister() {
-    const { data, error } = await supabase.functions.invoke('register', { body: {} });
+    const { data, error } = await supabase.functions.invoke('clever-endpoint', { body: {} });
     if (error) {
         let code = null;
         try { code = (await error.context.json()).error; } catch (_) { /* sin cuerpo */ }
