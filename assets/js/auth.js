@@ -37,6 +37,7 @@ export function discordAvatarUrl(discordId, hash, size = 128) {
 let currentAccount = null;
 let currentUserId = null;
 let busy = false;
+let currentMe = null; // respuesta de la acción 'me' (persona, listas, alias, peticiones)
 
 function emitChange() {
     window.dispatchEvent(new CustomEvent('fraka-auth-change', { detail: { account: currentAccount } }));
@@ -118,14 +119,64 @@ function renderSignedIn(account) {
     logout.textContent = 'Cerrar sesión';
     logout.addEventListener('click', signOut);
 
-    menu.append(name, user, role, logout);
+    const actions = document.createElement('div');
+    actions.className = 'auth-menu__actions';
+
+    menu.append(name, user, role, actions, logout);
     slot.append(avatarBtn, menu);
+    updateMenuActions();
 
     avatarBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         const open = menu.classList.toggle('open');
         avatarBtn.setAttribute('aria-expanded', String(open));
     });
+}
+
+function closeMenu() {
+    const menu = slot && slot.querySelector('.auth-menu');
+    if (menu) menu.classList.remove('open');
+    const btn = slot && slot.querySelector('.auth-avatar-btn');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+}
+
+function menuAction(label, handler) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'auth-menu__action';
+    b.textContent = label;
+    b.addEventListener('click', () => { closeMenu(); handler(); });
+    return b;
+}
+
+function goToProfile(listCode) {
+    window.location.hash = 'player/' + encodeURIComponent(currentMe.person.record_name) + '/' + listCode;
+}
+
+// Rellena "Ver perfil / Vincular perfil / Panel de Mods" según lo que devolvió 'me'. Solo es presentación:
+// el servidor vuelve a comprobar los permisos en cada acción.
+function updateMenuActions() {
+    const box = slot && slot.querySelector('.auth-menu__actions');
+    if (!box) return;
+    box.replaceChildren();
+    if (!currentAccount) return;
+    if (currentMe && currentMe.person) {
+        const lists = (currentMe.lists || []).filter((l) => l === 'main' || l === 'rising');
+        if (lists.length > 1) {
+            box.append(menuAction('Perfil (Lista)', () => goToProfile('list')));
+            box.append(menuAction('Perfil (Rising)', () => goToProfile('rising')));
+        } else if (lists.length === 1) {
+            box.append(menuAction('Ver perfil', () => goToProfile(lists[0] === 'rising' ? 'rising' : 'list')));
+        }
+    }
+    box.append(menuAction('Vincular perfil', () => {
+        if (window.frakaClaim) window.frakaClaim.open(); else showMessage('El módulo de vinculación no cargó. Recarga la página.');
+    }));
+    if (currentAccount.role === 'mod') {
+        box.append(menuAction('Panel de Mods', () => {
+            if (window.frakaModPanel) window.frakaModPanel.open(); else showMessage('El panel de Mods no cargó. Recarga la página.');
+        }));
+    }
 }
 
 document.addEventListener('click', (e) => {
@@ -150,6 +201,7 @@ async function signIn() {
 async function signOut() {
     await supabase.auth.signOut({ scope: 'local' }); // local: no depende de que el servidor aún conozca la sesión
     currentAccount = null;
+    currentMe = null;
     currentUserId = null;
     renderSignedOut();
     emitChange();
@@ -179,10 +231,44 @@ async function callRegister() {
     return data.account;
 }
 
+// Nombre con el que Supabase publicó la Edge Function de perfiles (el slug de su URL).
+const PROFILES_FUNCTION = 'rapid-service';
+const PROFILE_REJECT_CODES = { no_role: 'no_role', banned: 'banned', not_in_guild: 'not_in_guild', account_inactive: 'hidden' };
+
+// Llama a la función de perfiles. Lanza Error con .code ('name_taken', 'self_review', 'network'...).
+async function callProfiles(action, body = {}) {
+    let res;
+    try {
+        res = await supabase.functions.invoke(PROFILES_FUNCTION, { body: { action, ...body } });
+    } catch (e) {
+        const err = new Error('No se pudo conectar.');
+        err.code = 'network';
+        throw err;
+    }
+    if (res.error) {
+        let payload = null;
+        try { payload = await res.error.context.json(); } catch (_) { /* sin cuerpo */ }
+        const code = (payload && payload.error) || 'network';
+        const err = new Error((payload && payload.message) || res.error.message || code);
+        err.code = code;
+        if (PROFILE_REJECT_CODES[code]) await rejectSession(PROFILE_REJECT_CODES[code]);
+        throw err;
+    }
+    return res.data;
+}
+
+async function refreshMe() {
+    const me = await callProfiles('me');
+    currentMe = me;
+    updateMenuActions();
+    return me;
+}
+
 let verifiedAt = 0;
 
 async function rejectSession(code) {
     currentAccount = null;
+    currentMe = null;
     currentUserId = null;
     verifiedAt = 0;
     await supabase.auth.signOut({ scope: 'local' });
@@ -193,7 +279,7 @@ async function rejectSession(code) {
 
 // Verifica contra Discord (vía Edge Function) en CADA carga de la página, no solo al iniciar sesión.
 async function handleSession(session, opts = {}) {
-    if (!session) { currentAccount = null; currentUserId = null; verifiedAt = 0; renderSignedOut(); emitChange(); return; }
+    if (!session) { currentAccount = null; currentMe = null; currentUserId = null; verifiedAt = 0; renderSignedOut(); emitChange(); return; }
     if (busy) return;
     const fresh = currentAccount && currentUserId === session.user.id && (Date.now() - verifiedAt) < REVERIFY_MS;
     if (fresh) return; // Supabase emite SIGNED_IN al volver a la pestaña: no repetir si ya se verificó hace poco
@@ -207,6 +293,7 @@ async function handleSession(session, opts = {}) {
         verifiedAt = Date.now();
         renderSignedIn(account);
         emitChange();
+        refreshMe().catch((e) => console.warn('No se pudo cargar el perfil de la cuenta:', e));
     } catch (err) {
         if (err instanceof Denied) {
             await rejectSession(err.code);
@@ -257,4 +344,7 @@ document.addEventListener('visibilitychange', async () => {
 setTimeout(cleanAuthParamsFromUrl, 1500);
 
 // Para las próximas fases (otros scripts de la página pueden leer la cuenta y el cliente)
-window.frakaAuth = { supabase, getAccount: () => currentAccount, discordAvatarUrl };
+window.frakaAuth = {
+    supabase, getAccount: () => currentAccount, discordAvatarUrl,
+    callProfiles, showMessage, getMe: () => currentMe, refreshMe,
+};

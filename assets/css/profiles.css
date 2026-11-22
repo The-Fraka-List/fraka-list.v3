@@ -1,0 +1,93 @@
+/* Fase 2: modal de vinculación, panel de Mods y detalles de perfil.
+   Usa las variables de variables.css y los botones .btn de components.css. */
+
+.fp-overlay {
+    position: fixed; inset: 0; z-index: 10000;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex; align-items: center; justify-content: center;
+    padding: var(--space-4);
+}
+.fp-modal {
+    background: var(--bg-surface); color: var(--text-primary);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    width: min(520px, 100%); max-height: 88vh; display: flex; flex-direction: column;
+}
+.fp-modal--wide { width: min(780px, 100%); }
+.fp-head {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+    padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--border);
+}
+.fp-title { margin: 0; font-size: 1.15rem; }
+.fp-close {
+    background: none; border: 0; color: var(--text-secondary); font-size: 1.6rem; line-height: 1; cursor: pointer;
+    padding: 0 var(--space-2);
+}
+.fp-close:hover { color: var(--text-primary); }
+.fp-body { padding: var(--space-4) var(--space-5); overflow-y: auto; display: flex; flex-direction: column; gap: var(--space-3); }
+
+.fp-card {
+    background: var(--bg-base); border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4); display: flex; flex-direction: column; gap: var(--space-2);
+}
+.fp-card--soft { background: transparent; }
+.fp-card__title { font-weight: 600; display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); }
+.fp-big { font-size: 1.3rem; font-weight: 700; color: var(--accent-light); word-break: break-word; }
+.fp-muted { color: var(--text-muted); font-size: 0.9rem; margin: 0; overflow-wrap: anywhere; }
+.fp-small { font-size: 0.8rem; }
+.fp-quote {
+    margin: 0; padding: var(--space-2) var(--space-3); border-left: 3px solid var(--accent);
+    background: var(--bg-elevated); color: var(--text-secondary); font-size: 0.9rem; overflow-wrap: anywhere;
+}
+.fp-label { font-size: 0.85rem; color: var(--text-secondary); }
+.fp-input {
+    width: 100%; box-sizing: border-box; background: var(--bg-elevated); color: var(--text-primary);
+    border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--space-2) var(--space-3);
+    font: inherit; resize: vertical;
+}
+.fp-input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.fp-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-2); }
+.fp-error {
+    color: #ff8a8a; background: rgba(255, 80, 80, 0.1); border: 1px solid rgba(255, 80, 80, 0.4);
+    border-radius: var(--radius-md); padding: var(--space-2) var(--space-3); font-size: 0.9rem;
+}
+.fp-error[hidden] { display: none; }
+.fp-list { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.fp-tabs { display: flex; gap: var(--space-2); border-bottom: 1px solid var(--border); }
+.fp-tab {
+    background: none; border: 0; border-bottom: 2px solid transparent; color: var(--text-secondary);
+    padding: var(--space-2) var(--space-3); cursor: pointer; font: inherit;
+}
+.fp-tab.active { color: var(--text-primary); border-bottom-color: var(--accent); }
+.fp-tabcontent { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.fp-badge {
+    display: inline-block; font-size: 0.72rem; font-weight: 600; padding: 2px 8px; border-radius: 999px;
+    background: var(--bg-elevated); color: var(--text-secondary); border: 1px solid var(--border);
+}
+.fp-badge--pending, .fp-badge--approved { color: var(--accent-light); border-color: var(--accent); }
+.fp-badge--confirmed { color: #7ddf9a; border-color: rgba(125, 223, 154, 0.5); }
+.fp-badge--rejected, .fp-badge--expired, .fp-badge--cancelled { color: #ff9a9a; border-color: rgba(255, 120, 120, 0.5); }
+.fp-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.fp-chip {
+    font-family: var(--font-mono); font-size: 0.8rem; padding: 2px 8px; border-radius: var(--radius-md);
+    background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text-secondary);
+}
+
+/* Menú de la cuenta (acciones nuevas; auth.css no se toca) */
+.auth-menu__actions { display: flex; flex-direction: column; gap: 2px; margin: var(--space-2) 0; }
+.auth-menu__action {
+    background: none; border: 0; color: var(--text-primary); text-align: left; cursor: pointer;
+    padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); font: inherit; font-size: 0.9rem; width: 100%;
+}
+.auth-menu__action:hover { background: var(--bg-elevated); }
+
+/* Perfil público: @usuario de Discord y #nombre de record */
+.profile-card__handles { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
+.profile-handle {
+    font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-secondary);
+    background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 2px 8px;
+}
+
+.profile-identity__text { min-width: 0; }

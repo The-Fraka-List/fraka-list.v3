@@ -253,6 +253,30 @@ function escapeHtml(value) {
     })[ch]);
 }
 
+// ── Identidad de jugadores (fase 2) ──────────────────────────────────────
+// profiles.js (Supabase) resuelve alias y perfiles reclamados. Si no cargó, todo se comporta como antes.
+function identifyPlayer(raw, list) {
+    if (window.FrakaProfiles) return window.FrakaProfiles.identify(raw, list);
+    const name = raw === null || raw === undefined ? '' : String(raw).trim();
+    if (!name) return null;
+    return { key: name, name, displayName: name, discordUsername: null, avatarUrl: null, claimed: false, hidden: false, known: false, recordName: name };
+}
+
+function canonicalProfileName(raw) {
+    const id = identifyPlayer(raw);
+    return id ? id.name : '';
+}
+
+function sameRecordUser(a, b) {
+    if (window.FrakaProfiles) return window.FrakaProfiles.sameName(a, b);
+    return a === b;
+}
+
+function recordDisplayName(raw) {
+    const id = identifyPlayer(raw);
+    return id ? id.displayName : String(raw ?? '');
+}
+
 function getAvatarSrc(username, extensionIndex) {
     return `${AVATAR_DIR}${encodeURIComponent(username)}.${AVATAR_EXTENSIONS[extensionIndex]}`;
 }
@@ -581,6 +605,7 @@ function closePlayerVideoConfirm() {
 function renderPlayerProfileLayout(username) {
     const container = document.getElementById('tab-profile');
     if (!container) return;
+    username = canonicalProfileName(username) || username; // alias → nombre de record oficial
 
     container.innerHTML = `
         <div class="profile-page">
@@ -602,7 +627,8 @@ function getProfileContextData(username, source = currentProfileListContext) {
         ? (window.risingLeaderboardPlayers || [])
         : (window.leaderboardPlayers || []);
     const levels = isRising ? globalRisingLevels : globalLevels;
-    const rankIndex = players.findIndex(player => player.name === username);
+    const canonicalUsername = canonicalProfileName(username) || username;
+    const rankIndex = players.findIndex(player => player.name === canonicalUsername);
 
     return {
         source: isRising ? 'rising' : 'list',
@@ -682,6 +708,12 @@ function renderPlayerProfileCard(username) {
         ? `<span class="profile-banner__hardest">#${hardest.rank} ${hardest.level}</span>`
         : '';
     const rankLabel = profileData.rank === null ? '—' : `#${profileData.rank}`;
+    const ident = identifyPlayer(username, profileData.source === 'rising' ? 'rising' : 'main');
+    const useDiscordAvatar = Boolean(ident && ident.claimed && ident.avatarUrl);
+    const shownName = ident ? ident.displayName : username;
+    const handlesMarkup = ident && ident.claimed
+        ? `<div class="profile-card__handles">${ident.discordUsername ? `<span class="profile-handle">@${escapeHtml(ident.discordUsername)}</span>` : ''}<span class="profile-handle">#${escapeHtml(ident.recordName)}</span></div>`
+        : '';
 
     cardContainer.innerHTML = `
         <div class="profile-card">
@@ -697,11 +729,12 @@ function renderPlayerProfileCard(username) {
                     <div class="profile-card__avatar">
                     <img
                         class="profile-card__avatar-img"
-                        src="${getAvatarSrc(username, 0)}"
+                        src="${useDiscordAvatar ? escapeHtml(ident.avatarUrl) : getAvatarSrc(username, 0)}"
                         data-avatar-username="${escapeHtml(username)}"
-                        data-avatar-attempt="0"
+                        data-avatar-attempt="${useDiscordAvatar ? '-1' : '0'}"
+                        ${useDiscordAvatar ? 'referrerpolicy="no-referrer"' : ''}
                         onerror="handleAvatarError(this)"
-                        alt="${escapeHtml(username)}"
+                        alt="${escapeHtml(shownName)}"
                     >
                     </div>
                     <div class="profile-rank">
@@ -709,7 +742,10 @@ function renderPlayerProfileCard(username) {
                         <span class="profile-rank__label">RANK</span>
                     </div>
                 </div>
-                <h1 class="profile-card__name">${escapeHtml(username)}</h1>
+                <div class="profile-identity__text">
+                    <h1 class="profile-card__name">${escapeHtml(shownName)}</h1>
+                    ${handlesMarkup}
+                </div>
             </div>
         </div>
     `;
@@ -919,6 +955,15 @@ async function cargarNivelesConBaneos(carpetaDatos, archivoIndice) {
                 );
             }
 
+            // Perfiles ocultos (cuenta sin rol autorizado): sus records no se muestran en esta lista.
+            // Los nombres quedan reservados y el JSON no se modifica.
+            if (Array.isArray(datosNivel.records) && window.FrakaProfiles && window.FrakaProfiles.loaded) {
+                const listaActual = carpetaDatos === 'data-lvl' ? 'main' : 'rising';
+                datosNivel.records = datosNivel.records.filter(
+                    rec => !window.FrakaProfiles.isHidden(rec.user, listaActual)
+                );
+            }
+
             return datosNivel;
         } catch (err) {
             console.warn(`Error al cargar el nivel individual: ${carpetaDatos}/${nombreArchivo}`, err);
@@ -957,6 +1002,7 @@ async function cargarNivelesConBaneos(carpetaDatos, archivoIndice) {
 
 async function inicializarSitio() {
     try {
+        if (window.FrakaProfiles) await window.FrakaProfiles.ready;
         const resultadoList = await cargarNivelesConBaneos('data-lvl', '_list.json');
         globalLevels = resultadoList.niveles;
         let bugs = resultadoList.bugs;
@@ -1228,11 +1274,11 @@ function renderDetalleNivel(nivel, detailPanelId, recordUser = null) {
 
     const records = Array.isArray(nivel.records)
         ? recordUser
-            ? nivel.records.filter(record => record.user === recordUser)
+            ? nivel.records.filter(record => sameRecordUser(record.user, recordUser))
             : nivel.records
         : [];
     const noRecordsMessage = recordUser
-        ? `No hay record de ${recordUser} registrado para este nivel.`
+        ? `No hay record de ${escapeHtml(recordUser)} registrado para este nivel.`
         : 'No se han validado récords adicionales para este nivel todavía.';
     let recordsHTML = `
         <div style="background: var(--bg-base); padding: var(--space-4); border-radius: var(--radius-md); border: 1px dashed var(--border); text-align: center;">
@@ -1246,7 +1292,7 @@ function renderDetalleNivel(nivel, detailPanelId, recordUser = null) {
             recordsHTML += `
                 <li style="background: var(--bg-base); border: 1px solid var(--border); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
                     <div>
-                        <span style="font-weight: 600; color: var(--text-primary);">${rec.user}</span>
+                        <span style="font-weight: 600; color: var(--text-primary);">${escapeHtml(recordDisplayName(rec.user))}</span>
                         <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: var(--space-2); font-family: var(--font-mono);">${rec.hz ? rec.hz + 'Hz' : ''}</span>
                     </div>
                     <a href="${rec.link}" target="_blank" class="text-cyan text-mono" style="font-weight: 700; text-decoration: none; font-size: 1rem;">
@@ -1498,7 +1544,8 @@ function renderLeaderboard(niveles = globalLevels, containerId = 'leaderboard-co
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    const playerRegistry = {};
+    const playerRegistry = Object.create(null);
+    const listaLeaderboard = containerId === 'rising-leaderboard-container' ? 'rising' : 'main';
 
 niveles.forEach(nivel => {
     if (!nivel || !nivel.records || !Array.isArray(nivel.records)) return;
@@ -1509,12 +1556,16 @@ niveles.forEach(nivel => {
     const nombreNivelSeguro = nivel.name || "Nivel Desconocido";
 
     nivel.records.forEach(record => {
-        const username = record.user ? record.user.trim() : '';
-        if (!username) return;
+        const ident = identifyPlayer(record.user, listaLeaderboard);
+        if (!ident) return;
+        const username = ident.key;
 
         if (!playerRegistry[username]) {
             playerRegistry[username] = {
-                name: username,
+                name: ident.name,
+                displayName: ident.displayName,
+                avatarUrl: ident.avatarUrl,
+                claimed: ident.claimed,
                 points: 0,
                 completions: 0,
                 listProgress: 0,
@@ -1584,7 +1635,7 @@ niveles.forEach(nivel => {
         htmlMobile += `
             <div class="leaderboard-mobile-row" onclick="window.location.hash = 'player/' + encodeURIComponent(window.${storageKey}[${idx}].name) + '${profileSourcePath}'">
                 <div class="leaderboard-mobile-rank">#${rank}</div>
-                <div class="leaderboard-mobile-name">${player.name}</div>
+                <div class="leaderboard-mobile-name">${escapeHtml(player.displayName || player.name)}</div>
                 <div class="leaderboard-mobile-arrow">→</div>
             </div>
         `;
@@ -1622,7 +1673,7 @@ niveles.forEach(nivel => {
                 onmouseover="this.style.background='var(--bg-elevated)'"
                 onmouseout="this.style.background='transparent'">
                 <td class="text-mono" style="padding: var(--space-4); font-weight: 700; font-size: 1.1rem; color: var(--accent-light);">${medal}</td>
-                <td style="padding: var(--space-4); font-weight: 600; color: var(--text-primary);">${player.name}</td>
+                <td style="padding: var(--space-4); font-weight: 600; color: var(--text-primary);">${escapeHtml(player.displayName || player.name)}</td>
                 <td class="text-mono" style="padding: var(--space-4); font-weight: 700; color: #fff;">
                     ${player.points.toFixed(2)} <span style="font-size: 0.8rem; color: var(--accent-light);">PTS</span>
                 </td>
@@ -1936,6 +1987,9 @@ function rouletteToggleRemaining() {
         if (el) maybePlay();
     }, true);
 })();
+
+// Lectura de solo consulta para el panel de Mods (conteo de records).
+window.frakaData = { getLevels: () => ({ main: globalLevels, rising: globalRisingLevels }) };
 
 inicializarSitio();
 document.addEventListener('DOMContentLoaded', rouletteInit);
