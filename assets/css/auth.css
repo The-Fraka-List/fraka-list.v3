@@ -106,4 +106,17 @@
 @media (max-width: 768px) {
     .auth-btn { width: 44px; padding: 0; justify-content: center; }
     .auth-btn__text { display: none; }
+
+    /* Menu de la cuenta en movil: anclado al viewport (no al avatar),
+       para que nunca se salga por la izquierda de la pantalla. */
+    .auth-menu {
+        position: fixed;
+        top: calc(var(--nav-height) + var(--space-2));
+        left: var(--space-3);
+        right: var(--space-3);
+        min-width: 0;
+        max-width: none;
+        max-height: calc(100dvh - var(--nav-height) - var(--space-6));
+        overflow-y: auto;
+    }
 }
