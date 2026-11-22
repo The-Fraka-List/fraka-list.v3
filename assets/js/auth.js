@@ -169,6 +169,12 @@ function updateMenuActions() {
             box.append(menuAction('Ver perfil', () => goToProfile(lists[0] === 'rising' ? 'rising' : 'list')));
         }
     }
+    box.append(menuAction('Enviar record', () => {
+        if (window.frakaRecords) window.frakaRecords.openSubmit(); else showMessage('El módulo de records no cargó. Recarga la página.');
+    }));
+    box.append(menuAction('Ver envíos', () => {
+        if (window.frakaRecords) window.frakaRecords.openMine(); else showMessage('El módulo de records no cargó. Recarga la página.');
+    }));
     box.append(menuAction('Vincular perfil', () => {
         if (window.frakaClaim) window.frakaClaim.open(); else showMessage('El módulo de vinculación no cargó. Recarga la página.');
     }));

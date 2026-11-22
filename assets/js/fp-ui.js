@@ -46,6 +46,22 @@ const ERROR_TEXT = {
     not_mod: 'Solo los Mods pueden hacer esto.',
     discord_error: 'Discord no respondió. Intenta de nuevo en un momento.',
     network: 'No se pudo conectar. Revisa tu conexión.',
+    // records (fase 3)
+    limit_reached: 'Ya tienes 4 envíos activos. Espera a que un Mod resuelva alguno o cancela uno pendiente.',
+    duplicate_active: 'Ya tienes un envío activo para ese nivel en esa lista.',
+    list_not_allowed: 'Tu rol no permite enviar a esa lista.',
+    in_review_by_other: 'Otro Mod ya está revisando este envío.',
+    not_your_review: 'Abre el envío antes de resolverlo. Puede que otro Mod lo tenga o que el bloqueo caducara.',
+    not_pending: 'Este envío ya fue resuelto.',
+    not_cancellable: 'Solo se pueden cancelar envíos pendientes.',
+    note_required: 'Escribe el motivo del rechazo.',
+    submission_not_found: 'El envío ya no existe.',
+    invalid_link: 'El enlace debe empezar por https://',
+    invalid_percent: 'El porcentaje debe estar entre 1 y 100.',
+    invalid_hz: 'Los hz deben estar entre 30 y 1000.',
+    invalid_level: 'El nombre del nivel no es válido.',
+    invalid_level_data: 'Revisa los datos del nivel nuevo.',
+    no_role: 'Ya no tienes un rol autorizado.',
 };
 
 export function errorText(err) {

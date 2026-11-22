@@ -91,3 +91,36 @@
 }
 
 .profile-identity__text { min-width: 0; }
+
+/* Fase 3: records (formulario de envío, mis envíos, pestaña Records del panel de Mods) */
+.fp-field { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+.fp-dyn { display: flex; flex-direction: column; gap: var(--space-3); }
+.fp-radios { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); }
+.fp-radio {
+    display: inline-flex; align-items: center; gap: var(--space-2); cursor: pointer;
+    color: var(--text-primary); font-size: 0.95rem;
+}
+.fp-radio input { accent-color: var(--accent); width: 16px; height: 16px; margin: 0; }
+.fp-radio--off { opacity: 0.45; cursor: not-allowed; }
+.fp-radio--off input { cursor: not-allowed; }
+
+.fp-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+.fp-grid2--top { align-items: start; }
+.fp-col { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+.fp-actions--left { justify-content: flex-start; align-items: center; }
+.fp-link { color: var(--accent-light); font-size: 0.9rem; overflow-wrap: anywhere; }
+
+.fp-creators-wrap { display: flex; flex-direction: column; gap: var(--space-2); align-items: flex-start; }
+.fp-creators { display: flex; flex-direction: column; gap: var(--space-2); width: 100%; }
+.fp-creator-row { display: flex; gap: var(--space-2); }
+
+.fp-code {
+    margin: 0; padding: var(--space-3); background: var(--bg-elevated); border: 1px solid var(--border);
+    border-radius: var(--radius-md); color: var(--text-secondary); font-family: var(--font-mono);
+    font-size: 0.82rem; overflow-x: auto; white-space: pre;
+}
+
+@media (max-width: 640px) {
+    .fp-grid2 { grid-template-columns: 1fr; }
+    .fp-body { padding: var(--space-3) var(--space-4); }
+}
