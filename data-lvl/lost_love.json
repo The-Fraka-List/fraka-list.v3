@@ -19,6 +19,12 @@
             "link": "https://www.youtube.com/watch?v=aTQ4P1gLyzc",
             "percent": 100,
             "hz": 60
+        },
+        {
+            "user": "Serrod11",
+            "link": "https://www.youtube.com/watch?v=CJnID8r1BmY",
+            "percent": 100,
+            "hz": 1200
         }
     ]
 }
