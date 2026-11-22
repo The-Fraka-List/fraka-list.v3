@@ -2,6 +2,7 @@ let globalLevels = [];
 let globalLeaderboard = [];
 let legacyMode = false;
 let currentDetailLevelId = null;
+let youtubeIframeApiPromise = null;
 
 // Estado propio de RISING: mismo patrón que List, sin legacyMode (RISING no
 // tiene distinción Top 150+ y puede superar los 150 niveles sin problema).
@@ -658,6 +659,86 @@ function getYouTubeVideoId(url) {
     return '';
 }
 
+function loadYouTubeIframeApi() {
+    if (window.YT && window.YT.Player) return Promise.resolve(window.YT);
+    if (youtubeIframeApiPromise) return youtubeIframeApiPromise;
+
+    youtubeIframeApiPromise = new Promise((resolve, reject) => {
+        const previousCallback = window.onYouTubeIframeAPIReady;
+        window.onYouTubeIframeAPIReady = () => {
+            if (typeof previousCallback === 'function') previousCallback();
+            if (window.YT && window.YT.Player) resolve(window.YT);
+            else reject(new Error('La API del reproductor de YouTube no quedó disponible.'));
+        };
+
+        const script = document.createElement('script');
+        script.src = 'https://www.youtube.com/iframe_api';
+        script.onerror = () => reject(new Error('No se pudo cargar la API del reproductor de YouTube.'));
+        document.head.appendChild(script);
+    });
+
+    return youtubeIframeApiPromise;
+}
+
+function showVerificationVideoUnavailable(container) {
+    container.innerHTML = `
+        <div style="position: absolute; inset: 0; display: grid; place-items: center; padding: var(--space-6); box-sizing: border-box; background: var(--bg-base); color: var(--text-muted); text-align: center;">
+            Sin video de verificación disponible.
+        </div>
+    `;
+}
+
+function initializeVerificationPlayer(container, playerElement, videoIds, title) {
+    loadYouTubeIframeApi()
+        .then(YTApi => {
+            if (!container.isConnected) return;
+
+            const playerVars = { rel: 0 };
+            if (window.location.origin && window.location.origin !== 'null') {
+                playerVars.origin = window.location.origin;
+            }
+
+            new YTApi.Player(playerElement, {
+                videoId: videoIds[0],
+                playerVars,
+                events: {
+                    onReady: event => {
+                        event.target.getIframe().title = `${title} Verification Video`;
+                    },
+                    onError: event => {
+                        if (!container.isConnected) {
+                            event.target.destroy();
+                            return;
+                        }
+                        if (![100, 101, 150].includes(event.data)) return;
+
+                        const nextVideoIndex = Number(container.dataset.videoIndex || 0) + 1;
+                        if (nextVideoIndex >= videoIds.length) {
+                            event.target.destroy();
+                            showVerificationVideoUnavailable(container);
+                            return;
+                        }
+
+                        container.dataset.videoIndex = String(nextVideoIndex);
+                        event.target.cueVideoById(videoIds[nextVideoIndex]);
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('No se pudo activar el fallback de videos de verificación.', error);
+            if (!container.isConnected) return;
+
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.youtube.com/embed/${encodeURIComponent(videoIds[0])}`;
+            iframe.title = `${title} Verification Video`;
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            iframe.allowFullscreen = true;
+            iframe.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;';
+            container.replaceChildren(iframe);
+        });
+}
+
 function handleProfileBannerLoad(img) {
     const fallback = img.parentElement.querySelector('.profile-banner__fallback');
     if (fallback) fallback.hidden = true;
@@ -1260,15 +1341,12 @@ function renderDetalleNivel(nivel, detailPanelId, recordUser = null) {
     if (!detailPanel) return;
 
     const autoresTexto = getCreatorDisplay(nivel.creators, nivel.author);
-
-    let youtubeId = "";
-    if (nivel.verification) {
-        if (nivel.verification.includes("v=")) {
-            youtubeId = nivel.verification.split("v=")[1].split("&")[0];
-        } else if (nivel.verification.includes("youtu.be/")) {
-            youtubeId = nivel.verification.split("youtu.be/")[1].split("?")[0];
-        }
-    }
+    const videoIds = [...new Set([
+        getYouTubeVideoId(nivel.verification),
+        ...(Array.isArray(nivel.records)
+            ? nivel.records.map(record => getYouTubeVideoId(record && record.link))
+            : [])
+    ].filter(Boolean))];
 
     const puntosCalculados = getMaxPointsForPosition(nivel.rank).toFixed(2);
 
@@ -1320,15 +1398,11 @@ function renderDetalleNivel(nivel, detailPanelId, recordUser = null) {
                 </p>
             </div>
 
-            ${youtubeId ? `
+            ${videoIds.length ? `
             <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: var(--radius-md); border: 1px solid var(--border); margin-bottom: var(--space-6);">
-                <iframe 
-                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
-                    src="https://www.youtube.com/embed/${youtubeId}" 
-                    title="${nivel.name} Verification Video"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
+                <div id="verification-player-${detailPanelId}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: grid; place-items: center; color: var(--text-muted);">
+                    Cargando video...
+                </div>
             </div>
             ` : `
             <div style="background: var(--bg-base); padding: var(--space-6); border: 1px solid var(--border); border-radius: var(--radius-md); text-align: center; margin-bottom: var(--space-6); color: var(--text-muted);">
@@ -1357,6 +1431,12 @@ function renderDetalleNivel(nivel, detailPanelId, recordUser = null) {
             </div>
         </div>
     `;
+
+    if (videoIds.length) {
+        const container = detailPanel.querySelector(`#verification-player-${detailPanelId}`).parentElement;
+        const playerElement = detailPanel.querySelector(`#verification-player-${detailPanelId}`);
+        initializeVerificationPlayer(container, playerElement, videoIds, nivel.name);
+    }
 }
 
 function playTheGlaiCatProfileAudio(username) {

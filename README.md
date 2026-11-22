@@ -33,7 +33,7 @@ La interfaz tiene tres pestañas en la barra de navegación:
 1. **List**
    - Muestra un listado de niveles disponibles los cuales son los records de la comunidad.
    - Permite seleccionar un nivel para ver su detalle, con información como creador, verificador, ID del nivel, puntos de lista, requisito mínimo y contraseña.
-   - Inserta un video de verificación si la información del nivel incluye una URL de YouTube.
+   - Inserta un video de verificación si la información del nivel incluye una URL de YouTube. Si no está disponible o no permite reproducción incrustada, prueba en orden los videos de `records`, sin repetir enlaces.
 
 2. **Leaderboard**
    - Calcula un ranking global de jugadores basado en los datos disponibles en los niveles.
