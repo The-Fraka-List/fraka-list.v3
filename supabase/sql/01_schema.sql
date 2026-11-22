@@ -553,6 +553,15 @@ alter table public.audit_log      enable row level security;
 revoke all on public.persons, public.profiles, public.aliases,
               public.claim_requests, public.audit_log from anon, authenticated;
 
+-- service_role (solo la Edge Function, en el servidor) necesita permisos
+-- explicitos: Supabase ya no los concede solos a las tablas nuevas.
+-- Omitirlo causa "Error de base de datos" (500) en todas las acciones.
+grant usage on schema public to service_role;
+grant select, insert, update on public.persons, public.profiles, public.aliases,
+                                public.claim_requests to service_role;
+grant select, insert on public.audit_log to service_role;
+grant usage, select on all sequences in schema public to service_role;
+
 -- el usuario solo puede LEER sus propias peticiones (y solo estas columnas)
 drop policy if exists claim_requests_select_own on public.claim_requests;
 create policy claim_requests_select_own on public.claim_requests
