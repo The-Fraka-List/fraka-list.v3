@@ -1,0 +1,34 @@
+# Evita que Supabase (plan gratis) pause el proyecto por inactividad.
+# Cada día hace una consulta real de lectura a la base de datos con la clave PUBLICABLE
+# (la misma que ya usa la web, es pública). No usa ningún secreto.
+name: Supabase keepalive
+
+on:
+  schedule:
+    - cron: '17 9 * * *'   # todos los días a las 09:17 UTC (06:17 en Argentina)
+  workflow_dispatch: {}     # permite lanzarlo a mano desde la pestaña Actions
+
+permissions: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Consulta de lectura a la base de datos
+        env:
+          SUPABASE_URL: https://muhvaxujnlkvmygdxdtl.supabase.co
+          SUPABASE_PUBLISHABLE_KEY: sb_publishable_gBoEEYVZB6tMhPxqdQoV4Q_RDoNLhIn
+        run: |
+          set -euo pipefail
+          # Vista pública (ya visible en la web): una fila basta para que cuente como consulta.
+          code=$(curl --silent --show-error --output /tmp/resp.json --write-out '%{http_code}' \
+            --retry 4 --retry-delay 20 --retry-all-errors --max-time 30 \
+            -H "apikey: ${SUPABASE_PUBLISHABLE_KEY}" \
+            "${SUPABASE_URL}/rest/v1/public_profiles?select=record_name&limit=1")
+          echo "HTTP ${code}"
+          if [ "${code}" != "200" ]; then
+            echo "::error::Supabase no respondió 200 (respondió ${code}). Revisa si el proyecto está pausado."
+            exit 1
+          fi
+          echo "Consulta correcta."
