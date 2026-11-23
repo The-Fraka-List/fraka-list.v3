@@ -1,12 +1,15 @@
 // Panel de Mods (fase 2). Módulo ES. Abre con window.frakaModPanel.open().
 // Es solo una vista: cada acción la valida la Edge Function (rol Mod comprobado en vivo con Discord).
 import { h, fmtDate, fmtRemaining, errorText, openModal, ask, badge } from './fp-ui.js';
+import { recordSnippet, levelPath, openGeneratorFor, levelFileObject, copyText, statusBadge, listLabel } from './records.js';
 
 const LIST_LABELS = { main: 'Lista', rising: 'Rising' };
 const ACTION_LABELS = {
     person_created: 'Persona creada', claim_requested: 'Petición enviada', claim_approved: 'Petición aprobada',
     claim_rejected: 'Petición rechazada', claim_cancelled: 'Petición cancelada', claim_confirmed: 'Vinculación confirmada',
     unlink: 'Desvinculado', renamed: 'Renombrado', alias_added: 'Alias añadido',
+    record_submitted: 'Record enviado', record_cancelled: 'Envío cancelado',
+    record_approved: 'Record aprobado', record_rejected: 'Record rechazado',
 };
 
 function who(a) {
@@ -38,7 +41,7 @@ async function open() {
     const call = (action, body) => auth.callProfiles(action, body);
     const m = openModal('Panel de Mods', { wide: true });
 
-    const tabs = { requests: 'Peticiones', people: 'Personas', audit: 'Historial' };
+    const tabs = { requests: 'Peticiones', records: 'Records', people: 'Personas', audit: 'Historial' };
     const nav = h('div', { class: 'fp-tabs', role: 'tablist' });
     const content = h('div', { class: 'fp-tabcontent' });
     m.body.append(nav, content);
@@ -63,6 +66,7 @@ async function open() {
         content.replaceChildren(h('p', { class: 'fp-muted', text: 'Cargando…' }));
         try {
             if (current === 'requests') await renderRequests();
+            else if (current === 'records') await renderRecords();
             else if (current === 'people') await renderPeople();
             else await renderAudit();
         } catch (e) {
@@ -71,7 +75,7 @@ async function open() {
     }
 
     async function renderRequests() {
-        const { requests } = await call('mod_requests');
+        const { requests } = await call('mod_requests'); if (current !== 'requests') return;
         if (!requests.length) { content.replaceChildren(h('p', { class: 'fp-muted', text: 'No hay peticiones abiertas.' })); return; }
         content.replaceChildren(...requests.map((r) => {
             const t = r.target || {};
@@ -103,8 +107,163 @@ async function open() {
         }));
     }
 
+    // ── Records (fase 3) ─────────────────────────────────────────────────────
+    let showClosed = false;
+
+    function setRecordsBadge(n) {
+        const btn = nav.querySelector('[data-tab="records"]');
+        if (btn) btn.textContent = 'Records' + (n > 0 ? ' (' + n + ')' : '');
+    }
+
+    function levelInfo(r) {
+        const data = window.frakaData && window.frakaData.getLevels && window.frakaData.getLevels();
+        const arr = (data && data[r.list]) || [];
+        const stem = (lvl) => String(lvl._file || '').split('/').pop().replace(/\.json$/i, '');
+        return {
+            loaded: arr.length > 0,
+            byFile: arr.find((l) => stem(l).toLowerCase() === String(r.level_file).toLowerCase()) || null,
+            byId: r.kind === 'new' && r.level_data ? arr.find((l) => String(l.id) === String(r.level_data.id)) || null : null,
+        };
+    }
+
+    function snippetBox(r) {
+        const code = h('pre', { class: 'fp-code', text: recordSnippet(r) });
+        const status = h('span', { class: 'fp-muted fp-small' });
+        const btn = h('button', {
+            type: 'button', class: 'btn btn--secondary', text: 'Copiar bloque',
+            onclick: async () => { status.textContent = (await copyText(recordSnippet(r))) ? 'Copiado.' : 'No se pudo copiar, selecciónalo a mano.'; },
+        });
+        return h('div', { class: 'fp-card fp-card--soft' },
+            h('div', { class: 'fp-muted', text: 'Añade este bloque al final de "records" en ' + levelPath(r) + ' (con una coma tras el bloque anterior):' }),
+            code, h('div', { class: 'fp-actions fp-actions--left' }, btn, status));
+    }
+
+    function showApprovedModal(r) {
+        const mm = openModal('Record aprobado');
+        mm.body.append(
+            h('p', { class: 'fp-muted', text: 'Aprobado no significa publicado: no aparecerá en la web hasta que subas el archivo al repo.' }),
+            snippetBox(r));
+    }
+
+    function newLevelBox(r, win) {
+        const d = r.level_data || {};
+        const status = h('span', { class: 'fp-muted fp-small' });
+        const open = () => {
+            const w = window.open('about:blank', '_blank');
+            if (!openGeneratorFor(r, w)) status.textContent = 'No se pudo abrir el generador. Usa "Copiar JSON del nivel".';
+        };
+        return h('div', { class: 'fp-card fp-card--soft' },
+            h('div', { class: 'fp-muted', text: 'Archivo: ' + levelPath(r) + ' (y añadirlo a _list.json en el puesto que corresponda).' }),
+            h('div', { class: 'fp-actions fp-actions--left' },
+                h('button', { type: 'button', class: 'btn btn--secondary', text: 'Abrir en el generador', onclick: open }),
+                h('button', {
+                    type: 'button', class: 'btn btn--secondary', text: 'Copiar JSON del nivel',
+                    onclick: async () => { status.textContent = (await copyText(JSON.stringify(levelFileObject(r), null, 4))) ? 'Copiado.' : 'No se pudo copiar.'; },
+                }), status));
+    }
+
+    function recordDetails(r) {
+        const info = levelInfo(r);
+        const nodes = [];
+        if (r.kind === 'existing') {
+            nodes.push(h('div', { class: 'fp-muted', text: 'Record: ' + r.percent + '% · ' + r.hz + ' Hz' }));
+            if (info.loaded && !info.byFile) nodes.push(h('div', { class: 'fp-error', text: 'Ese nivel no existe en ' + listLabel(r.list) + ': revisa el nombre de archivo.' }));
+            const fp = window.FrakaProfiles;
+            if (info.byFile && fp && (info.byFile.records || []).some((x) => fp.sameName(x.user, r.user_name))) {
+                nodes.push(h('div', { class: 'fp-muted fp-small', text: 'Aviso: esta persona ya tiene un record en ese nivel.' }));
+            }
+        } else {
+            const d = r.level_data || {};
+            nodes.push(h('div', { class: 'fp-muted', text: 'Nivel nuevo: ' + d.name + ' · ID ' + d.id + ' · autor ' + d.author }));
+            nodes.push(h('div', { class: 'fp-muted', text: 'Creators: ' + (d.creators || []).join(', ') + ' · verificador: ' + d.verifier }));
+            nodes.push(h('div', { class: 'fp-muted', text: '% para calificar: ' + d.percentToQualify + ' · contraseña: ' + (d.password || '—') + ' · record: ' + r.percent + '% · ' + r.hz + ' Hz' }));
+            if (info.byId) nodes.push(h('div', { class: 'fp-error', text: 'Ya existe un nivel con ese ID en ' + listLabel(r.list) + ': ' + info.byId.name + '.' }));
+            if (info.byFile) nodes.push(h('div', { class: 'fp-error', text: 'Ya existe un archivo con ese nombre en ' + listLabel(r.list) + '.' }));
+        }
+        if (/^https:\/\/\S+$/.test(r.link || '')) nodes.push(h('a', { class: 'fp-link', href: r.link, target: '_blank', rel: 'noopener noreferrer', text: r.kind === 'new' ? 'Ver video de verificación' : 'Ver video del record' }));
+        if (r.note) nodes.push(h('blockquote', { class: 'fp-quote', text: r.note }));
+        return nodes;
+    }
+
+    async function renderRecords() {
+        const data = await call('mod_records', { include_closed: showClosed }); if (current !== 'records') return;
+        setRecordsBadge(data.pending_count);
+        const toggle = h('input', { type: 'checkbox', checked: showClosed || null });
+        toggle.addEventListener('change', () => { showClosed = toggle.checked; load(); });
+        const toolbar = h('label', { class: 'fp-radio' }, toggle, h('span', { text: 'Mostrar resueltos' }));
+        if (!data.records.length) {
+            content.replaceChildren(toolbar, h('p', { class: 'fp-muted', text: showClosed ? 'No hay envíos.' : 'No hay envíos por revisar.' }));
+            return;
+        }
+        const guardedReload = (fn) => guarded(async () => { await fn(); await load(); });
+
+        content.replaceChildren(toolbar, ...data.records.map((r) => {
+            const open = r.status === 'pending' || r.status === 'in_review';
+            const card = h('div', { class: 'fp-card' },
+                h('div', { class: 'fp-card__title' }, r.level_file, ' ', badge(listLabel(r.list)),
+                    badge(r.kind === 'new' ? 'Nivel nuevo' : 'Record nuevo'), statusBadge(r.status),
+                    r.mine ? badge('Tuyo') : null, r.self_review ? badge('Autoaprobado') : null),
+                h('div', { class: 'fp-muted', text: 'Envía: ' + who(r.submitter) + ' · rol ' + ((r.submitter && r.submitter.role) || '?') + ' · se registrará como #' + r.user_name }),
+                h('div', { class: 'fp-muted fp-small', text: 'Enviado ' + fmtDate(r.created_at) + (open ? ' · caduca en ' + fmtRemaining(r.expires_at) : '') }),
+                r.review_note ? h('div', { class: 'fp-muted fp-small', text: 'Nota de revisión: ' + r.review_note }) : null);
+
+            if (r.status === 'pending') {
+                card.append(h('div', { class: 'fp-actions' }, h('button', {
+                    type: 'button', class: 'btn btn--primary', text: 'Revisar',
+                    onclick: () => guardedReload(() => call('start_record_review', { record_id: r.id })),
+                })));
+            } else if (r.status === 'in_review' && !r.locked_by_me) {
+                card.append(h('div', { class: 'fp-muted fp-small', text: 'Otro Mod lo está revisando ahora (bloqueo hasta ' + fmtDate(r.review_expires_at) + ').' }));
+            } else if (r.status === 'in_review' && r.locked_by_me) {
+                card.append(...recordDetails(r));
+                if (r.kind === 'existing') card.append(snippetBox(r));
+                if (r.mine) card.append(h('div', { class: 'fp-muted fp-small', text: 'Es tu propio envío: si lo apruebas queda marcado como autoaprobado.' }));
+                card.append(h('div', { class: 'fp-muted fp-small', text: 'Lo tienes bloqueado para los demás Mods hasta ' + fmtDate(r.review_expires_at) + '.' }));
+                card.append(h('div', { class: 'fp-actions' },
+                    h('button', {
+                        type: 'button', class: 'btn btn--secondary', text: 'Soltar',
+                        onclick: () => guardedReload(() => call('release_record_review', { record_id: r.id })),
+                    }),
+                    h('button', {
+                        type: 'button', class: 'btn btn--secondary', text: 'Rechazar',
+                        onclick: () => guarded(async () => {
+                            const note = await ask('Rechazar envío', { label: 'Motivo del rechazo (lo verá el usuario)', required: true, confirmText: 'Rechazar' });
+                            if (note === null) return;
+                            await call('finish_record_review', { record_id: r.id, approve: false, note });
+                            auth.showMessage('Envío rechazado.');
+                            await load();
+                        }),
+                    }),
+                    h('button', {
+                        type: 'button', class: 'btn btn--primary', text: 'Aprobar',
+                        onclick: () => guarded(async () => {
+                            // La pestaña del generador se abre YA (dentro del clic) para que el navegador no la bloquee.
+                            const win = r.kind === 'new' ? window.open('about:blank', '_blank') : null;
+                            try {
+                                await call('finish_record_review', { record_id: r.id, approve: true });
+                            } catch (e) {
+                                if (win) win.close();
+                                throw e;
+                            }
+                            auth.showMessage('Aprobado. Recuerda: no está publicado hasta que subas el archivo.');
+                            if (r.kind === 'new') {
+                                if (!openGeneratorFor(r, win)) auth.showMessage('Aprobado, pero no se pudo abrir el generador. Ábrelo desde la pestaña Records con "Mostrar resueltos".');
+                            } else {
+                                showApprovedModal(r);
+                            }
+                            await load();
+                        }),
+                    })));
+            } else if (r.status === 'approved') {
+                card.append(...recordDetails(r));
+                card.append(r.kind === 'new' ? newLevelBox(r) : snippetBox(r));
+            }
+            return card;
+        }));
+    }
+
     async function renderPeople() {
-        const { people } = await call('mod_people');
+        const { people } = await call('mod_people'); if (current !== 'people') return;
         const search = h('input', { type: 'search', class: 'fp-input', placeholder: 'Buscar por nombre, alias o @usuario…', 'aria-label': 'Buscar' });
         const list = h('div', { class: 'fp-list' });
         const norm = (s) => (window.FrakaProfiles ? window.FrakaProfiles.normalize(s) : String(s || '').toLowerCase());
@@ -170,7 +329,7 @@ async function open() {
     }
 
     async function renderAudit() {
-        const { log } = await call('mod_audit', { limit: 100 });
+        const { log } = await call('mod_audit', { limit: 100 }); if (current !== 'audit') return;
         if (!log.length) { content.replaceChildren(h('p', { class: 'fp-muted', text: 'Sin actividad registrada.' })); return; }
         content.replaceChildren(h('div', { class: 'fp-list' }, log.map((e) => {
             const d = e.details && typeof e.details === 'object' ? e.details : {};
@@ -183,6 +342,8 @@ async function open() {
     }
 
     setTab('requests');
+    // Contador de pendientes en la pestaña Records desde el principio (si falla, se ignora)
+    call('mod_records').then((d) => setRecordsBadge(d.pending_count)).catch(() => {});
 }
 
 window.frakaModPanel = { open };
