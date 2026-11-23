@@ -418,3 +418,32 @@ async function cargarArchivoModList(file) {
 
     rellenarFormularioConDatos(data, file);
 }
+
+// ── Precarga desde el panel de Mods (cola de records) ─────────────────
+// Al aprobar un nivel nuevo, el panel guarda los datos en localStorage y abre
+// esta herramienta en otra pestaña. Aquí se leen una sola vez, se rellena el
+// formulario y se borra la clave. Caduca a los 10 minutos.
+const MODLIST_PREFILL_KEY = 'fraka_modlist_prefill';
+
+function aplicarPrefillModList() {
+    const route = window.location.hash.replace('#', '').toLowerCase();
+    if (route !== 'frk-mod-list') return;
+    let payload = null;
+    try {
+        const raw = localStorage.getItem(MODLIST_PREFILL_KEY);
+        if (!raw) return;
+        localStorage.removeItem(MODLIST_PREFILL_KEY);
+        payload = JSON.parse(raw);
+    } catch (err) {
+        return;
+    }
+    if (!payload || payload.v !== 1 || !payload.data) return;
+    if (!Number.isFinite(payload.at) || Date.now() - payload.at > 10 * 60 * 1000) return;
+    if (!esEstructuraModListValida(payload.data)) return;
+    const nombre = String(payload.filename || 'level').replace(/\.json$/i, '');
+    rellenarFormularioConDatos(payload.data, { name: nombre + '.json' });
+}
+
+document.addEventListener('DOMContentLoaded', aplicarPrefillModList);
+window.addEventListener('hashchange', aplicarPrefillModList);
+if (document.readyState !== 'loading') aplicarPrefillModList();
