@@ -2,29 +2,41 @@
    Usa las variables de variables.css y los botones .btn de components.css. */
 
 .fp-overlay {
+    --fp-modal-height: 720px;
     position: fixed; inset: 0; z-index: 10000;
     background: rgba(0, 0, 0, 0.65);
     display: flex; align-items: center; justify-content: center;
-    padding: var(--space-4);
+    padding: var(--space-1);
 }
 .fp-modal {
     background: var(--bg-surface); color: var(--text-primary);
     border: 1px solid var(--border); border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
-    width: min(520px, 100%); max-height: 88vh; display: flex; flex-direction: column;
+    box-sizing: border-box;
+    width: min(520px, 100%);
+    height: min(var(--fp-modal-height), calc(100vh - var(--space-2)));
+    height: min(var(--fp-modal-height), calc(100dvh - var(--space-2)));
+    min-height: 0; display: flex; flex-direction: column;
 }
 .fp-modal--wide { width: min(780px, 100%); }
 .fp-head {
     display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
-    padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--border);
+    flex-shrink: 0; padding: var(--space-4) var(--space-6); border-bottom: 1px solid var(--border);
 }
 .fp-title { margin: 0; font-size: 1.15rem; }
 .fp-close {
-    background: none; border: 0; color: var(--text-secondary); font-size: 1.6rem; line-height: 1; cursor: pointer;
-    padding: 0 var(--space-2);
+    display: inline-flex; align-items: center; justify-content: center; flex: 0 0 var(--space-8);
+    width: var(--space-8); height: var(--space-8); padding: 0;
+    background: var(--accent); border: 0; border-radius: var(--radius-full);
+    color: #fff; font-size: 1.75rem; line-height: 1; cursor: pointer;
+    transition: background var(--transition-fast);
 }
-.fp-close:hover { color: var(--text-primary); }
-.fp-body { padding: var(--space-4) var(--space-5); overflow-y: auto; display: flex; flex-direction: column; gap: var(--space-3); }
+.fp-close:hover { background: var(--accent-light); }
+.fp-close:focus-visible { outline: 2px solid var(--accent-light); outline-offset: 2px; }
+.fp-body {
+    flex: 1 1 auto; min-height: 0; padding: var(--space-4) var(--space-6);
+    overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; gap: var(--space-3);
+}
 
 .fp-card {
     background: var(--bg-base); border: 1px solid var(--border); border-radius: var(--radius-md);
@@ -46,7 +58,10 @@
     font: inherit; resize: vertical;
 }
 .fp-input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
-.fp-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-2); }
+.fp-actions {
+    display: flex; flex-wrap: wrap; justify-content: flex-end;
+    gap: var(--space-2); margin-top: var(--space-1);
+}
 .fp-error {
     color: #ff8a8a; background: rgba(255, 80, 80, 0.1); border: 1px solid rgba(255, 80, 80, 0.4);
     border-radius: var(--radius-md); padding: var(--space-2) var(--space-3); font-size: 0.9rem;
@@ -95,14 +110,34 @@
 /* Fase 3: records (formulario de envío, mis envíos, pestaña Records del panel de Mods) */
 .fp-field { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
 .fp-dyn { display: flex; flex-direction: column; gap: var(--space-3); }
-.fp-radios { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); }
+.fp-radios { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); }
 .fp-radio {
     display: inline-flex; align-items: center; gap: var(--space-2); cursor: pointer;
     color: var(--text-primary); font-size: 0.95rem;
 }
 .fp-radio input { accent-color: var(--accent); width: 16px; height: 16px; margin: 0; }
+.fp-radio input[type="radio"] {
+    appearance: none; -webkit-appearance: none;
+    flex: 0 0 34px; width: 34px; height: 18px;
+    border: 1px solid var(--border); border-radius: var(--radius-full);
+    background-color: var(--bg-elevated);
+    background-image: radial-gradient(circle, var(--text-secondary) 0 7px, transparent 7.5px);
+    background-size: 14px 14px; background-repeat: no-repeat; background-position: 0 center;
+    transition: background-color var(--transition-fast), background-position var(--transition-fast), border-color var(--transition-fast), background-image var(--transition-fast);
+    cursor: pointer;
+}
+.fp-radio input[type="radio"]:checked {
+    background-color: var(--accent-glow); border-color: var(--accent);
+    background-image: radial-gradient(circle, var(--accent-light) 0 7px, transparent 7.5px);
+    background-position: 16px center;
+}
+.fp-radio input[type="radio"]:focus-visible { outline: 2px solid var(--accent-light); outline-offset: 2px; }
 .fp-radio--off { opacity: 0.45; cursor: not-allowed; }
 .fp-radio--off input { cursor: not-allowed; }
+
+@media (prefers-reduced-motion: reduce) {
+    .fp-radio input[type="radio"] { transition: none; }
+}
 
 .fp-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
 .fp-grid2--top { align-items: start; }
@@ -122,7 +157,9 @@
 
 @media (max-width: 640px) {
     .fp-grid2 { grid-template-columns: 1fr; }
-    .fp-body { padding: var(--space-3) var(--space-4); }
+    .fp-head { padding: var(--space-4); }
+    .fp-body { padding: var(--space-4); }
+    .fp-actions > .btn { flex: 1 1 8rem; }
 }
 
 /* Avisos: punto naranja en la foto, botón del menú en rojo y punto en las pestañas del panel */
