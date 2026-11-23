@@ -68,12 +68,12 @@
 }
 
 .roulette-btn-danger {
-    background: #5a0000;
-    border: 1px solid #8b0000;
+    background: var(--accent-deep);
+    border: 1px solid var(--accent);
     color: var(--text-primary);
 }
 .roulette-btn-danger:hover {
-    background: #8b0000;
+    background: var(--accent);
 }
 
 .roulette-current {
@@ -130,7 +130,7 @@
 }
 
 .roulette-toast {
-    background: #5a0000;
+    background: var(--accent-deep);
     border: 1px solid var(--accent);
     border-radius: var(--radius-md);
     padding: var(--space-3) var(--space-4);

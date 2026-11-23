@@ -17,6 +17,7 @@ let currentProfileUsername = null;
 // Contexto de lista activo para la tarjeta de perfil: si el usuario entra a
 // un perfil desde List o Rising, la barra de progreso usa esa lista como base.
 let currentProfileListContext = 'list';
+let navLogoBaseLabel = 'LIST';
 let currentProfileLevelId = null;
 let profileSidebarScrollTop = 0;
 let profileLegacyMode = false;
@@ -79,11 +80,26 @@ function volverALista(route) {
     window.history.replaceState(window.history.state, '', `#/${route}`);
 }
 
+function updateNavLogoLabel(label) {
+    const logoSpan = document.querySelector('.nav__logo-list .text-accent');
+    if (logoSpan) logoSpan.textContent = label;
+}
+
+function updateNavLogoForRoute(route) {
+    if (route === 'rising' || (route === 'player' && currentProfileListContext === 'rising')) {
+        navLogoBaseLabel = 'RISING';
+    } else if (route !== 'frk-dm') {
+        navLogoBaseLabel = legacyMode ? 'LEGACY' : 'LIST';
+    }
+
+    updateNavLogoLabel(route === 'frk-dm' ? 'DEL MES' : navLogoBaseLabel);
+}
+
 function updateListLabel(isLegacy) {
     const label = isLegacy ? 'LEGACY' : 'LIST';
+    navLogoBaseLabel = label;
 
-    const logoSpan = document.querySelector('.nav__logo .text-accent');
-    if (logoSpan) logoSpan.textContent = label;
+    updateNavLogoLabel(label);
 
     const navBtn = document.querySelector('.nav__links .nav__link-btn[data-route="list"]');
     if (navBtn) navBtn.textContent = label.charAt(0) + label.slice(1).toLowerCase();
@@ -881,6 +897,9 @@ function handleHashRouting() {
         currentProfileUsername = null;
         targetSection = document.getElementById('tab-welcome');
     }
+
+    document.documentElement.classList.toggle('frk-dm-theme', route === 'frk-dm');
+    updateNavLogoForRoute(route);
 
     // 3. Desactivar visualmente todas las secciones y botones que existan en la página
     document.querySelectorAll('.main-content').forEach(section => {

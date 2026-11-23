@@ -23,11 +23,15 @@ Solamente se mete los RECORDS de las personas activas y que tengan el rol FRAKA 
         { nombre: 'S3b4s506_',  url: 'https://twitch.tv/sebastianrm506' },
     ],
 
-    // ── Editores de la lista ────────────────────────────────────────────────
-    editores: [
-        { nombre: 'Hanky_rawr', url: null },
-        { nombre: 'Fiumba',      url: null },
-        { nombre: 'Aku',      url: null },
+    // ── Helpers ────────────────────────────────────────────────────────────
+    helpers: [
+        { nombre: 'hanky_rawr', url: null },
+        { nombre: 'fiumba', url: null },
+        { nombre: 'aku', url: null },
+        { nombre: 'bloxxy0497', url: null },
+        { nombre: 'juniorlock123', url: null },
+        { nombre: 'ramxzs507', url: null },
+        { nombre: 'flippyxdxd', url: null },
     ],
 
     // ── Listas de referencia ────────────────────────────────────────────────
@@ -95,13 +99,8 @@ Solamente se mete los RECORDS de las personas activas y que tengan el rol FRAKA 
         `;
     }
 
-    // Construye el HTML de la sección de personas (owners + editores unidos)
-    const todasLasPersonas = [
-        ...WELCOME_CONFIG.owners.map(p => ({ ...p, rol: 'Owner' })),
-        ...WELCOME_CONFIG.editores.map(p => ({ ...p, rol: 'Editor' })),
-    ];
-
-    const personasHTML = todasLasPersonas.map(p => personaHTML(p, p.rol)).join('');
+    const ownersHTML  = WELCOME_CONFIG.owners.map(p => personaHTML(p, 'Owner')).join('');
+    const helpersHTML = WELCOME_CONFIG.helpers.map(p => personaHTML(p, 'Helper')).join('');
     const listasHTML   = WELCOME_CONFIG.listas.map(listaHTML).join('');
 
     // Descripción: preserva saltos de línea como párrafos
@@ -140,14 +139,27 @@ Solamente se mete los RECORDS de las personas activas y que tengan el rol FRAKA 
             </div>
         </div>
 
-        <!-- ── Owners & Editores ─────────────────────────────────────────── -->
+        <!-- ── Owners y Helpers ──────────────────────────────────────────── -->
         <div class="welcome-section">
-            <div class="welcome-section__header">
-                <span class="welcome-section__label">Equipo</span>
-                <div class="welcome-section__line"></div>
-            </div>
-            <div class="welcome-people-grid">
-                ${personasHTML}
+            <div class="welcome-team-groups">
+                <div class="welcome-team-group">
+                    <div class="welcome-section__header">
+                        <span class="welcome-section__label">Owners</span>
+                        <div class="welcome-section__line"></div>
+                    </div>
+                    <div class="welcome-people-grid">
+                        ${ownersHTML}
+                    </div>
+                </div>
+                <div class="welcome-team-group">
+                    <div class="welcome-section__header">
+                        <span class="welcome-section__label">Helpers</span>
+                        <div class="welcome-section__line"></div>
+                    </div>
+                    <div class="welcome-people-grid">
+                        ${helpersHTML}
+                    </div>
+                </div>
             </div>
         </div>
 

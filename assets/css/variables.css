@@ -29,6 +29,14 @@
     --accent: #8b0000;
     --accent-light: #b22222;
     --accent-glow: rgba(139, 0, 0, 0.15);
+    --accent-tint: rgba(139, 0, 0, 0.08);
+    --accent-subtle: #160b0b;
+    --accent-deep: #5a0000;
+    --accent-darker: #700000;
+    --accent-strong: #9b0000;
+    --accent-hover: #cf3030;
+    --accent-warning: #e04343;
+    --accent-shadow: rgba(255, 68, 68, 0.4);
 
     --border: #222222;
     --border-accent: #441111;

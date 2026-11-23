@@ -108,9 +108,15 @@
     <header class="nav">
         <div class="nav__inner">
             <div class="nav__logo">
-                <span class="text-display" style="font-size: 1.4rem; font-weight: 700; letter-spacing: 0.05em;">
-                    FRAKA <span class="text-accent">LIST</span>
-                </span>
+                <a class="nav__logo-link" href="#list" aria-label="Ir a la lista">
+                    <span class="text-display nav__logo-name" style="font-size: 1.4rem; font-weight: 700; letter-spacing: 0.05em;">
+                        FRAKA <span class="nav__logo-list">
+                            <span class="text-accent">LIST</span>
+                            <!-- Edita data-label; prefija con # o // para ocultar el badge. -->
+                            <small class="nav__logo-beta" data-label="BETA v3.5"></small>
+                        </span>
+                    </span>
+                </a>
             </div>
 
             
@@ -206,9 +212,8 @@
         </section>
 
         <section id="tab-leaderboard" class="main-content">
-            <div class="page-hero" style="padding: var(--space-8) 0 var(--space-6);">
-                <div class="page-hero__label">Puntuaciones Globales</div>
-                <h1 style="font-family: var(--font-display); font-size: 3rem; margin: 1;">Top Jugadores</h1>
+            <div class="page-hero" style="padding: var(--space-8) 0 var(--space-6); text-align: center;">
+                <h1 style="font-family: var(--font-display); font-size: 3rem; margin: 0;">Top <span class="text-accent">FRAKAS</span></h1>
             </div>
             <div id="leaderboard-container"></div>
         </section>

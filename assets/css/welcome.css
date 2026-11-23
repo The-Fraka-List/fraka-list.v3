@@ -1,6 +1,8 @@
 /* ── Welcome / Landing Screen ──────────────────────────────────────────── */
 
 #tab-welcome {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
@@ -17,6 +19,28 @@
 }
 #tab-welcome::-webkit-scrollbar-thumb:hover {
     background: var(--text-muted);
+}
+
+@media (min-width: 769px) {
+    #tab-welcome,
+    #tab-leaderboard {
+        height: calc(100vh - var(--nav-height) - 2px);
+        height: calc(100dvh - var(--nav-height) - 2px);
+        margin-top: calc(var(--nav-height) + 2px);
+    }
+
+    #tab-welcome {
+        padding-top: var(--space-8);
+    }
+
+    #tab-leaderboard {
+        width: 100vw;
+        margin-left: calc(50% - 50vw);
+    }
+
+    #tab-leaderboard > .page-hero {
+        padding-top: 0 !important;
+    }
 }
 
 /* ── Hero ──────────────────────────────────────────────────────────────── */
@@ -36,7 +60,7 @@
     text-transform: uppercase;
     color: var(--accent-light);
     border: 1px solid var(--border-accent);
-    background: rgba(139, 0, 0, 0.08);
+    background: var(--accent-tint);
     padding: var(--space-1) var(--space-4);
     border-radius: var(--radius-full);
     margin-bottom: var(--space-6);
@@ -102,7 +126,12 @@
     background: linear-gradient(90deg, var(--border-accent) 0%, transparent 100%);
 }
 
-/* ── Grid de personas (Owners / Editores) ──────────────────────────────── */
+/* ── Equipo ────────────────────────────────────────────────────────────── */
+
+.welcome-team-groups {
+    display: grid;
+    gap: var(--space-8);
+}
 
 .welcome-people-grid {
     display: grid;
@@ -200,7 +229,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(139,0,0,0.08) 0%, transparent 70%);
+    background: radial-gradient(ellipse at 50% 0%, var(--accent-tint) 0%, transparent 70%);
     opacity: 0;
     transition: opacity var(--transition-base);
 }

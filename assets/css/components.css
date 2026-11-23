@@ -66,7 +66,7 @@ body {
 }
 
 .level-card.active {
-    background: linear-gradient(90deg, #160b0b 0%, var(--bg-card) 100%);
+    background: linear-gradient(90deg, var(--accent-subtle) 0%, var(--bg-card) 100%);
     border-color: var(--accent-light);
     box-shadow: inset 4px 0 0 var(--accent);
 }
@@ -729,6 +729,51 @@ body.legacy-mode::after {
     opacity: 0;
 }
 
+:root.frk-dm-theme {
+    --accent: #b8860b;
+    --accent-light: #ffd54f;
+    --accent-glow: rgba(255, 193, 7, 0.18);
+    --accent-tint: rgba(255, 193, 7, 0.08);
+    --accent-subtle: #211806;
+    --accent-deep: #725400;
+    --accent-darker: #8a6500;
+    --accent-strong: #a87600;
+    --accent-hover: #ffe082;
+    --accent-warning: #d4a017;
+    --accent-shadow: rgba(255, 193, 7, 0.4);
+    --border-accent: #806000;
+}
+
+:root.frk-dm-theme body.legacy-mode {
+    --accent: #b8860b;
+    --accent-light: #ffd54f;
+    --accent-glow: rgba(255, 193, 7, 0.18);
+    --border-accent: #806000;
+}
+
+:root.frk-dm-theme body {
+    background-image: url('../img/fraka_GOLD.png');
+}
+
+:root.frk-dm-theme body::before {
+    background-image: url('../img/gradient-ii.png');
+    opacity: 1;
+}
+
+:root.frk-dm-theme body::after {
+    background-image: url('../img/gradient-dd.png');
+    opacity: 1;
+}
+
+:root.frk-dm-theme .nav__logo-beta {
+    background: var(--accent-tint);
+}
+
+:root.frk-dm-theme .copy-toast {
+    background: var(--accent-strong);
+    box-shadow: 0 4px 12px var(--accent-shadow);
+}
+
 
 .leaderboard-mobile {
     display: none;
@@ -988,7 +1033,7 @@ body.legacy-mode::after {
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%) translateY(20px);
-    background: #9b0000;
+    background: var(--accent-strong);
     color: white;
     padding: 12px 24px;
     border-radius: var(--radius-md);
@@ -997,7 +1042,7 @@ body.legacy-mode::after {
     z-index: 9999;
     opacity: 0;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(255, 68, 68, 0.4);
+    box-shadow: 0 4px 12px var(--accent-shadow);
 }
 
 .copy-toast.show {
@@ -1992,7 +2037,7 @@ body.legacy-mode .copy-toast {
 }
 
 * {
-    scrollbar-color: #b22222 var(--bg-surface) !important;
+    scrollbar-color: var(--accent-light) var(--bg-surface) !important;
     scrollbar-width: thin !important;
 }
 
@@ -2007,18 +2052,18 @@ body.legacy-mode .copy-toast {
 }
 
 *::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #b22222 0%, #8b0000 100%) !important;
+    background: linear-gradient(180deg, var(--accent-light) 0%, var(--accent) 100%) !important;
     border: 2px solid var(--bg-surface) !important;
     border-radius: var(--radius-full) !important;
     min-height: 24px;
 }
 
 *::-webkit-scrollbar-thumb:horizontal {
-    background-image: linear-gradient(90deg, #b22222 0%, #8b0000 100%) !important;
+    background-image: linear-gradient(90deg, var(--accent-light) 0%, var(--accent) 100%) !important;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #cf3030 0%, #700000 100%) !important;
+    background: linear-gradient(180deg, var(--accent-hover) 0%, var(--accent-darker) 100%) !important;
 }
 
 *::-webkit-scrollbar-button {

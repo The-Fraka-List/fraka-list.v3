@@ -154,11 +154,11 @@ body.mod-list-active .container {
 }
 
 .modlist-input--invalid {
-    border-color: #e04343;
+    border-color: var(--accent-warning);
 }
 
 .modlist-input--invalid:focus {
-    border-color: #e04343;
+    border-color: var(--accent-warning);
 }
 
 .modlist-input::placeholder {
