@@ -213,7 +213,7 @@ async function openSubmit() {
             const lname = h('input', { class: 'fp-input', type: 'text', maxlength: '100', placeholder: 'Damage' });
             const author = h('input', { class: 'fp-input', type: 'text', maxlength: '100' });
             const verification = h('input', { class: 'fp-input', type: 'url', maxlength: '300', placeholder: 'https://www.youtube.com/watch?v=…' });
-            const qualify = h('input', { class: 'fp-input', type: 'number', inputmode: 'numeric', min: '1', max: '100', placeholder: '100' });
+            const qualify = h('input', { class: 'fp-input', type: 'text', readonly: true, value: '100' });
             const password = h('input', { class: 'fp-input', type: 'text', maxlength: '100', placeholder: 'Free To Copy' });
             const percent = h('input', { class: 'fp-input', type: 'number', inputmode: 'numeric', min: '1', max: '100', placeholder: '100' });
             const hz = h('input', { class: 'fp-input', type: 'number', inputmode: 'numeric', min: '30', max: '1000', placeholder: '60' });
@@ -239,7 +239,7 @@ async function openSubmit() {
                 field('Creators', h('div', { class: 'fp-creators-wrap' }, creatorsBox,
                     h('button', { type: 'button', class: 'btn btn--secondary', text: '+ Añadir creator', onclick: () => addCreator() }))),
                 field('Enlace de verificación (https)', verification, 'También será el enlace de tu record.'),
-                h('div', { class: 'fp-grid2' }, field('% para calificar', qualify), field('Contraseña', password)),
+                h('div', { class: 'fp-grid2' }, field('% para calificar', qualify, 'Fijo en 100.'), field('Contraseña', password)),
                 h('div', { class: 'fp-grid2' }, field('Tu porcentaje', percent), field('Hz (FPS)', hz)),
                 field('Nota (opcional)', note));
 
@@ -254,8 +254,7 @@ async function openSubmit() {
                 const creators = Array.from(creatorsBox.querySelectorAll('.fp-creator')).map((i) => i.value.trim()).filter(Boolean);
                 if (!creators.length) return { error: 'Añade al menos un creator.' };
                 if (!HTTPS_RE.test(verification.value.trim())) return { error: 'El enlace de verificación debe empezar por https://' };
-                const q = Number(qualify.value); const p = Number(percent.value); const z = Number(hz.value);
-                if (!Number.isInteger(q) || q < 1 || q > 100) return { error: '"% para calificar" debe ser un entero de 1 a 100.' };
+                const q = 100; const p = Number(percent.value); const z = Number(hz.value);
                 if (!Number.isInteger(p) || p < 1 || p > 100) return { error: 'Tu porcentaje debe ser un entero de 1 a 100.' };
                 if (!Number.isInteger(z) || z < 30 || z > 1000) return { error: 'Los hz deben ser un entero de 30 a 1000.' };
                 return {
@@ -326,6 +325,11 @@ async function openMine() {
         } catch (e) {
             m.body.replaceChildren(h('div', { class: 'fp-error', text: errorText(e) }));
             return;
+        }
+        if (window.frakaNotify) {
+            const stamps = info.closed.filter((r) => (r.status === 'approved' || r.status === 'rejected') && r.reviewed_at).map((r) => r.reviewed_at);
+            const last = stamps.reduce((a, b) => (Date.parse(b) > Date.parse(a) ? b : a), stamps[0]);
+            if (last) window.frakaNotify.markSeen('mine', last);
         }
         const onCancel = async (r) => {
             try {

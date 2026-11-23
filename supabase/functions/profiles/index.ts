@@ -503,7 +503,7 @@ const ACTIONS: Record<string, Action> = {
         if (!ld || typeof ld !== 'object' || Array.isArray(ld)) {
           throw new HttpError(400, 'bad_request', 'Faltan los datos del nivel')
         }
-        levelData = ld
+        levelData = { ...ld, percentToQualify: '100' } // siempre 100, no lo elige el usuario
       }
       const id = await rpc(admin, 'submit_record', {
         p_actor: user.id,
@@ -543,6 +543,36 @@ const ACTIONS: Record<string, Action> = {
         submitName = al.length ? al[0].alias : people[0].record_name
       }
       return { active, closed, max: MAX_ACTIVE_RECORDS, submit_name: submitName }
+    },
+  },
+
+  // ---- avisos del punto naranja: solo marcas de tiempo, nada sensible ----------
+  // live:false a propósito: se consulta cada minuto y no debe ir a Discord cada vez.
+  // Mod = rol guardado en la base (puede tardar en reflejar un cambio de rol).
+  notifications: {
+    live: false, mod: false,
+    run: async ({ admin, user, account }) => {
+      const nowIso = new Date().toISOString()
+      const out: Any = { mine: [], records: [], requests: [] }
+      const closed = await rows(
+        admin.from('record_submissions').select('reviewed_at').eq('submitter_user_id', user.id)
+          .in('status', ['approved', 'rejected']).not('reviewed_at', 'is', null)
+          .order('reviewed_at', { ascending: false }).limit(40), 'record_submissions')
+      out.mine = closed.map((r) => r.reviewed_at)
+      if (account.role === 'mod') {
+        // los envíos propios del Mod no cuentan como novedad para él
+        const pend = await rows(
+          admin.from('record_submissions').select('created_at').eq('status', 'pending')
+            .gt('expires_at', nowIso).neq('submitter_user_id', user.id)
+            .order('created_at', { ascending: false }).limit(100), 'record_submissions')
+        out.records = pend.map((r) => r.created_at)
+        const reqs = await rows(
+          admin.from('claim_requests').select('created_at').eq('status', 'pending')
+            .gt('expires_at', nowIso).neq('requester_user_id', user.id)
+            .order('created_at', { ascending: false }).limit(100), 'claim_requests')
+        out.requests = reqs.map((r) => r.created_at)
+      }
+      return out
     },
   },
 

@@ -124,3 +124,32 @@
     .fp-grid2 { grid-template-columns: 1fr; }
     .fp-body { padding: var(--space-3) var(--space-4); }
 }
+
+/* Avisos: punto naranja en la foto, botón del menú en rojo y punto en las pestañas del panel */
+.auth-dot {
+    position: absolute; left: -1px; bottom: -1px; z-index: 2;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #F4930B; border: 2px solid var(--bg-primary, #0d0d0d);
+    pointer-events: none;
+    animation: fk-dot-pulse 2s ease-out infinite;
+}
+@keyframes fk-dot-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(244, 147, 11, 0.55); }
+    70% { box-shadow: 0 0 0 8px rgba(244, 147, 11, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(244, 147, 11, 0); }
+}
+@media (prefers-reduced-motion: reduce) { .auth-dot { animation: none; } }
+.auth-menu__action--new {
+    display: flex; align-items: center; justify-content: space-between; gap: var(--space-2);
+    background: var(--accent);
+}
+.auth-menu__action--new:hover { background: var(--accent-light); }
+.auth-menu__count {
+    min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: #F4930B; color: #1a1000; font-size: 0.75rem; font-weight: 700; line-height: 1;
+}
+.fp-tab--new::after {
+    content: ''; display: inline-block; width: 8px; height: 8px; margin-left: 6px;
+    border-radius: 50%; background: #F4930B; vertical-align: middle;
+}

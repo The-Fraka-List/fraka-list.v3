@@ -56,6 +56,23 @@ async function open() {
         nav.appendChild(h('button', { type: 'button', class: 'fp-tab', 'data-tab': k, role: 'tab', text: label, onclick: () => setTab(k) }));
     });
 
+    // Avisos: al ver una pestaña se marca como vista; los puntos de las pestañas siguen a los avisos.
+    function markSeenLatest(section, stamps) {
+        if (!window.frakaNotify || !stamps.length) return;
+        window.frakaNotify.markSeen(section, stamps.reduce((a, b) => (Date.parse(b) > Date.parse(a) ? b : a)));
+    }
+    function tabDots() {
+        if (!window.frakaNotify) return;
+        nav.querySelectorAll('.fp-tab').forEach((b) => {
+            const k = b.dataset.tab;
+            b.classList.toggle('fp-tab--new', (k === 'requests' || k === 'records') && window.frakaNotify.count(k) > 0);
+        });
+    }
+    if (window.frakaNotify) {
+        const off = window.frakaNotify.onChange(() => { if (!nav.isConnected) off(); else tabDots(); });
+        tabDots();
+    }
+
     async function guarded(fn) {
         try { await fn(); } catch (e) {
             auth.showMessage(errorText(e));
@@ -76,6 +93,7 @@ async function open() {
 
     async function renderRequests() {
         const { requests } = await call('mod_requests'); if (current !== 'requests') return;
+        markSeenLatest('requests', requests.map((r) => r.created_at));
         if (!requests.length) { content.replaceChildren(h('p', { class: 'fp-muted', text: 'No hay peticiones abiertas.' })); return; }
         content.replaceChildren(...requests.map((r) => {
             const t = r.target || {};
@@ -187,6 +205,7 @@ async function open() {
 
     async function renderRecords() {
         const data = await call('mod_records', { include_closed: showClosed }); if (current !== 'records') return;
+        markSeenLatest('records', data.records.filter((r) => r.status === 'pending').map((r) => r.created_at));
         setRecordsBadge(data.pending_count);
         const toggle = h('input', { type: 'checkbox', checked: showClosed || null });
         toggle.addEventListener('change', () => { showClosed = toggle.checked; load(); });
