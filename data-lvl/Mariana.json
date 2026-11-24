@@ -1,0 +1,20 @@
+{
+    "id": 144448963,
+    "name": "Mariana",
+    "author": "bv57",
+    "creators": [
+        "bv57"
+    ],
+    "verifier": "notsparture1",
+    "verification": "https://youtu.be/w2RsGcrmteU",
+    "percentToQualify": "100",
+    "password": "67",
+    "records": [
+        {
+            "user": "notsparture1",
+            "link": "https://youtu.be/w2RsGcrmteU",
+            "percent": 100,
+            "hz": 60
+        }
+    ]
+}
