@@ -1,0 +1,20 @@
+{
+    "id": 65269826,
+    "name": "Arcane",
+    "author": "elnico_gdxd",
+    "creators": [
+        "qMystic"
+    ],
+    "verifier": "elnico_gdxd1",
+    "verification": "https://youtu.be/De8eLK63dTU?si=JPIfR7fAasxmiLOq",
+    "percentToQualify": "100",
+    "password": "1",
+    "records": [
+        {
+            "user": "elnico_gdxd1",
+            "link": "https://youtu.be/De8eLK63dTU?si=JPIfR7fAasxmiLOq",
+            "percent": 100,
+            "hz": 120
+        }
+    ]
+}
