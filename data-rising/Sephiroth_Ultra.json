@@ -1,0 +1,20 @@
+{
+    "id": 96604457,
+    "name": "sephiroth ultra",
+    "author": "Soup26",
+    "creators": [
+        "Soup26"
+    ],
+    "verifier": "breik__",
+    "verification": "https://youtu.be/KWVoShA1qgo?si=iOGM0qKg57E9j0Ib",
+    "percentToQualify": "100",
+    "password": "1",
+    "records": [
+        {
+            "user": "breik__",
+            "link": "https://youtu.be/KWVoShA1qgo?si=iOGM0qKg57E9j0Ib",
+            "percent": 100,
+            "hz": 60
+        }
+    ]
+}
