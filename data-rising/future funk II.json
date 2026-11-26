@@ -1,0 +1,20 @@
+{
+    "id": 59626284,
+    "name": "future funk II",
+    "author": "jonathanGD",
+    "creators": [
+        "jonathanGD"
+    ],
+    "verifier": "breik__",
+    "verification": "https://youtu.be/W8L8GGnhg-I?si=PDJhudvrg9VXyql9",
+    "percentToQualify": "100",
+    "password": "787153",
+    "records": [
+        {
+            "user": "breik__",
+            "link": "https://youtu.be/W8L8GGnhg-I?si=PDJhudvrg9VXyql9",
+            "percent": 100,
+            "hz": 60
+        }
+    ]
+}
