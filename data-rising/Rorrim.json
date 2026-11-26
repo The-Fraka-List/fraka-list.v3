@@ -1,0 +1,23 @@
+{
+    "id": 80983470,
+    "name": "Rorrim",
+    "author": "Shocksidian",
+    "creators": [
+        "Shocksidian",
+        "Ryder",
+        "Licen00",
+        "Vlacc"
+    ],
+    "verifier": "breik__",
+    "verification": "https://youtu.be/_JsfYKz_C88?si=ACzNhSBrBmbmeH82",
+    "percentToQualify": "100",
+    "password": "2343",
+    "records": [
+        {
+            "user": "breik__",
+            "link": "https://youtu.be/_JsfYKz_C88?si=ACzNhSBrBmbmeH82",
+            "percent": 100,
+            "hz": 60
+        }
+    ]
+}
