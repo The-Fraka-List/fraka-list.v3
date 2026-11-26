@@ -1,0 +1,20 @@
+{
+    "id": 36089851,
+    "name": "excessive compliment",
+    "author": "pennutoh",
+    "creators": [
+        "pennutoh"
+    ],
+    "verifier": "breik__",
+    "verification": "https://youtu.be/zm7PJRrBPB0?si=zMECktyqbrsjvMNf",
+    "percentToQualify": "100",
+    "password": "212541",
+    "records": [
+        {
+            "user": "breik__",
+            "link": "https://youtu.be/zm7PJRrBPB0?si=zMECktyqbrsjvMNf",
+            "percent": 100,
+            "hz": 60
+        }
+    ]
+}
