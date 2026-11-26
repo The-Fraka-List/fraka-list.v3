@@ -1,0 +1,20 @@
+{
+    "id": 96901617,
+    "name": "Heat waves",
+    "author": "Buine12",
+    "creators": [
+        "Buine12"
+    ],
+    "verifier": "breik__",
+    "verification": "https://youtu.be/T7eJR4Pj9yk?si=ejz0AVKfQd4pjX4E",
+    "percentToQualify": "100",
+    "password": "23",
+    "records": [
+        {
+            "user": "breik__",
+            "link": "https://youtu.be/T7eJR4Pj9yk?si=ejz0AVKfQd4pjX4E",
+            "percent": 100,
+            "hz": 60
+        }
+    ]
+}
