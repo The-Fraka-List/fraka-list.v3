@@ -1,0 +1,20 @@
+{
+    "id": 139426149,
+    "name": "Milka",
+    "author": "Ficelo",
+    "creators": [
+        "Ficelo"
+    ],
+    "verifier": "breik__",
+    "verification": "https://youtu.be/2f91ASLgSmU?si=6uZ53THnsRTke5rD",
+    "percentToQualify": "100",
+    "password": "5fgg",
+    "records": [
+        {
+            "user": "breik__",
+            "link": "https://youtu.be/2f91ASLgSmU?si=6uZ53THnsRTke5rD",
+            "percent": 100,
+            "hz": 60
+        }
+    ]
+}
