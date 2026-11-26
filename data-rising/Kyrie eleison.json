@@ -1,0 +1,37 @@
+{
+    "id": 57638361,
+    "name": "Kyrie eleison",
+    "author": "Viprin",
+    "creators": [
+        "Darwin",
+        "Codex",
+        "OSIRIS GD",
+        "Terron",
+        "DesTicY",
+        "Viprin",
+        "Koolboom",
+        "ILRELL",
+        "FerdeFunky",
+        "Jghost",
+        "JonathanGD",
+        "Serponge",
+        "Loserchik67",
+        "Pan",
+        "Knobbelboy",
+        "Xender Game",
+        "Rustam",
+        "Hostility"
+    ],
+    "verifier": "breik__",
+    "verification": "https://youtu.be/0nBkdAkTr3U?si=dG9MbaHasEUl5Joy",
+    "percentToQualify": "100",
+    "password": "004088",
+    "records": [
+        {
+            "user": "breik__",
+            "link": "https://youtu.be/0nBkdAkTr3U?si=dG9MbaHasEUl5Joy",
+            "percent": 100,
+            "hz": 60
+        }
+    ]
+}
