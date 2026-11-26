@@ -1,0 +1,20 @@
+{
+    "id": 82671886,
+    "name": "Taurine",
+    "author": "Vadi",
+    "creators": [
+        "Vadi"
+    ],
+    "verifier": "breik__",
+    "verification": "https://youtu.be/fLTR5w7rBPg?si=3A9rz0H3y-ShSC1T",
+    "percentToQualify": "100",
+    "password": "123",
+    "records": [
+        {
+            "user": "breik__",
+            "link": "https://youtu.be/fLTR5w7rBPg?si=3A9rz0H3y-ShSC1T",
+            "percent": 100,
+            "hz": 60
+        }
+    ]
+}
